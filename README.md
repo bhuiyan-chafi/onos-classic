@@ -50,9 +50,9 @@ This fork is going to be maintained for **educational and research purposes** by
 
 ## Documentation
 
-An archived and searchable version of the official ONOS Classic documentation and wiki is maintained at:
-
-- **ONOS Classic Wiki**: [https://andrea-campanella.github.io/onos-classic-wiki/](https://andrea-campanella.github.io/onos-classic-wiki/)
+The complete ONOS Classic documentation has been restored and is available through both:
+- **[GitHub Wiki (Integrated)](https://github.com/bhuiyan-chafi/onos-classic/wiki)**: Native wiki directly attached to this repository with structured navigation.
+- **[Searchable Online Mirror](https://andrea-campanella.github.io/onos-classic-wiki/)**: Full-text searchable documentation portal powered by MkDocs Material.
 
 ---
 

@@ -63,3 +63,5 @@ tools/package/archetypes/ui2/src/main/resources/archetype-resources/web/__artifa
 tools/package/archetypes/ui2/src/main/resources/archetype-resources/web/__artifactId__-gui/projects/__artifactId__-gui-lib/src/**/*.js
 netconf-trial/
 openroadm-trial/
+wiki/
+wiki-staging/
