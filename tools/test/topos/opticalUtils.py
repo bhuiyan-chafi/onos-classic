@@ -56,7 +56,7 @@ import re
 import json
 import os
 from time import sleep
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from mininet.node import Switch, OVSSwitch, RemoteController
 from mininet.topo import Topo
@@ -87,7 +87,7 @@ def dpids_to_ids(sysConfig):
                     switch_id += 1
         return dpids_to_ids
     except:
-        print "Error working with {}\nError: {}\n".format(sysConfig, sys.exc_info())
+        print("Error working with {}\nError: {}\n".format(sysConfig, sys.exc_info()))
         fd.close()
         return None
 
@@ -114,7 +114,7 @@ def switchJSON(switch):
     annotations.setdefault('name', switch.name)
     configDict[ 'annotations' ] = annotations
     ports = []
-    for port, intf in switch.intfs.items():
+    for port, intf in list(switch.intfs.items()):
         if intf.name == 'lo':
             continue
         portDict = {}
@@ -330,7 +330,7 @@ class LINCSwitch(OpticalSwitch):
         self.configDict[ 'annotations' ].setdefault('name', self.name)
         self.configDict[ 'type' ] = self.switchType
         self.configDict[ 'ports' ] = []
-        for port, intf in self.intfs.items():
+        for port, intf in list(self.intfs.items()):
             if intf.name == 'lo':
                 continue
             else:
@@ -358,7 +358,7 @@ class LINCSwitch(OpticalSwitch):
             fd.write(command)
             fd.close()
         except:
-            print "Error working with {}\nError: {}\n".format(self.writePipe, sys.exc_info())
+            print("Error working with {}\nError: {}\n".format(self.writePipe, sys.exc_info()))
             if fd:
                 fd.close()
 
@@ -553,26 +553,26 @@ class LINCSwitch(OpticalSwitch):
         url = 'http://%s:8181/onos/v1/devices' % LINCSwitch.controllers[0].ip
         time = 0
         # Set up password authentication
-        pw_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+        pw_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
         pw_mgr.add_password(None, url, LINCSwitch.restUser, LINCSwitch.restPass)
-        handler = urllib2.HTTPBasicAuthHandler(pw_mgr)
-        opener = urllib2.build_opener(handler)
+        handler = urllib.request.HTTPBasicAuthHandler(pw_mgr)
+        opener = urllib.request.build_opener(handler)
         opener.open(url)
-        urllib2.install_opener(opener)
+        urllib.request.install_opener(opener)
         # focus on just checking the state of devices we're interested in
         # expected devices availability map
-        devMap =  dict.fromkeys(map( lambda x: x['uri'], devices ), False)
+        devMap =  dict.fromkeys([x['uri'] for x in devices], False)
         while True:
-            response = json.load(urllib2.urlopen(url))
+            response = json.load(urllib.request.urlopen(url))
             devs = response.get('devices')
 
             # update availability map
             for d in devs:
-                if devMap.has_key(d['id']):
+                if d['id'] in devMap:
                     devMap[d['id']] = d['available']
 
             # Check if all devices we're interested became available
-            if all(devMap.viewvalues()):
+            if all(devMap.values()):
                 break;
 
             if (time >= TIMEOUT):
@@ -612,7 +612,7 @@ class LINCSwitch(OpticalSwitch):
             # Annotations hold switch name and latitude/longitude
             devDict = {}
             devDict[ 'type' ] = switch[ 'type' ]
-            devDict.update({k: v for k, v in switch[ 'annotations' ].iteritems() if k in BasicDevConfigKeys})
+            devDict.update({k: v for k, v in switch[ 'annotations' ].items() if k in BasicDevConfigKeys})
             devSubj = switch[ 'uri' ]
             devices[ devSubj ] = { 'basic': devDict }
 

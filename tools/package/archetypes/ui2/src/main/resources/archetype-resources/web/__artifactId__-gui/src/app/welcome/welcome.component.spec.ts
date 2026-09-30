@@ -20,13 +20,13 @@ import {ActivatedRoute, Params} from '@angular/router';
 import { of } from 'rxjs';
 import { } from 'jasmine';
 import {
-    Gui2FwLibModule,
+    GuiFwLibModule,
     FnService,
     IconService,
     IconComponent,
     LogService,
     TableFilterPipe, LoadingComponent,
-} from 'gui2-fw-lib';
+} from 'gui-fw-lib';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -72,7 +72,7 @@ describe('WelcomeComponent', () => {
                 BrowserAnimationsModule,
                 FormsModule,
                 RouterTestingModule,
-                Gui2FwLibModule
+                GuiFwLibModule
             ],
             declarations: [ WelcomeComponent ],
             providers: [

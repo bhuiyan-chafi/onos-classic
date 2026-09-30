@@ -24,8 +24,8 @@ import {
     FnService,
     IconService,
     LogService,
-    Gui2FwLibModule,
-} from 'org_onosproject_onos/web/gui2-fw-lib/public_api';
+    GuiFwLibModule,
+} from 'org_onosproject_onos/web/gui-fw-lib/public_api';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -67,7 +67,7 @@ describe('RoadmDeviceComponent', () => {
         fs = new FnService(ar, logSpy, windowMock);
 
         TestBed.configureTestingModule({
-            imports: [BrowserAnimationsModule, CommonModule, FormsModule, RouterTestingModule, Gui2FwLibModule],
+            imports: [BrowserAnimationsModule, CommonModule, FormsModule, RouterTestingModule, GuiFwLibModule],
             declarations: [
                 RoadmDeviceComponent
             ],

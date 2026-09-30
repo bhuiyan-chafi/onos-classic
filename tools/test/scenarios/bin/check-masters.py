@@ -6,7 +6,7 @@ import sys
 import time
 
 if len(sys.argv) != 2:
-    print "usage: check-masters {node}"
+    print("usage: check-masters {node}")
     sys.exit(1)
 
 node = sys.argv[1]

@@ -21,8 +21,18 @@
          id="ONOS" version="2.5">
     <display-name>ONOS GUI</display-name>
 
+    <filter>
+        <filter-name>Http Response Headers Filter</filter-name>
+        <filter-class>org.onosproject.ui.impl.gui2.HttpResponseHeadersFilter</filter-class>
+    </filter>
+    
+    <filter-mapping> 
+        <filter-name>Http Response Headers Filter</filter-name> 
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
-        <welcome-file>/index.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <!--
@@ -35,6 +45,10 @@
         <web-resource-collection>
             <web-resource-name>Secured API</web-resource-name>
             <url-pattern>/rs/applications/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Secured Nav</web-resource-name>
+            <url-pattern>/rs/nav/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -64,7 +78,7 @@
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.onosproject.ui.impl.MainIndexResource</param-value>
+            <param-value>org.onosproject.ui.impl.gui2.MainIndexResource</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -74,66 +88,66 @@
         <url-pattern>/index.html</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>Main Module</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.onosproject.ui.impl.MainModuleResource
-            </param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Main Module</servlet-name>-->
+        <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>jersey.config.server.provider.classnames</param-name>-->
+            <!--<param-value>org.onosproject.ui.impl.MainModuleResource-->
+            <!--</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Main Module</servlet-name>
-        <url-pattern>/onos.js</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Main Module</servlet-name>-->
+        <!--<url-pattern>/onos.js</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>Nav Module</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.onosproject.ui.impl.MainNavResource</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Nav Module</servlet-name>-->
+        <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>jersey.config.server.provider.classnames</param-name>-->
+            <!--<param-value>org.onosproject.ui.impl.MainNavResource</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Nav Module</servlet-name>
-        <url-pattern>/nav.html</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Nav Module</servlet-name>-->
+        <!--<url-pattern>/nav.html</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>View Module</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.onosproject.ui.impl.MainViewResource</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>View Module</servlet-name>-->
+        <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>jersey.config.server.provider.classnames</param-name>-->
+            <!--<param-value>org.onosproject.ui.impl.MainViewResource</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>View Module</servlet-name>
-        <url-pattern>/app/view/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>View Module</servlet-name>-->
+        <!--<url-pattern>/app/view/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
-    <servlet>
-        <servlet-name>Foo Module</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>org.onosproject.ui.impl.FooResource</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>Foo Module</servlet-name>-->
+        <!--<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>-->
+        <!--<init-param>-->
+            <!--<param-name>jersey.config.server.provider.classnames</param-name>-->
+            <!--<param-value>org.onosproject.ui.impl.FooResource</param-value>-->
+        <!--</init-param>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
 
-    <servlet-mapping>
-        <servlet-name>Foo Module</servlet-name>
-        <url-pattern>/raw/*</url-pattern>
-    </servlet-mapping>
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>Foo Module</servlet-name>-->
+        <!--<url-pattern>/raw/*</url-pattern>-->
+    <!--</servlet-mapping>-->
 
     <servlet>
         <servlet-name>JAX-RS Service</servlet-name>
@@ -142,9 +156,10 @@
             <param-name>jersey.config.server.provider.classnames</param-name>
             <param-value>
                 org.glassfish.jersey.media.multipart.MultiPartFeature,
-                org.onosproject.ui.impl.LogoutResource,
+                org.onosproject.ui.impl.gui2.LogoutResource,
                 org.onosproject.ui.impl.TopologyResource,
-                org.onosproject.ui.impl.ApplicationResource
+                org.onosproject.ui.impl.ApplicationResource,
+                org.onosproject.ui.impl.gui2.NavResource
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
@@ -157,8 +172,7 @@
 
     <servlet>
         <servlet-name>Web Socket Service</servlet-name>
-        <servlet-class>org.onosproject.ui.impl.UiWebSocketServlet
-        </servlet-class>
+        <servlet-class>org.onosproject.ui.impl.UiWebSocketServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
 

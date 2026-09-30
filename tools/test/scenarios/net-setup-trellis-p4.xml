@@ -47,7 +47,7 @@
                   exec="onos ${OCI} app deactivate org.onosproject.openflow"
                   requires="Trellis-Net-P4-Setup.Initial-Summary-Check"/>
             <step name="App-Deactivate-Gui"
-                  exec="onos ${OCI} app deactivate org.onosproject.gui2"
+                  exec="onos ${OCI} app deactivate org.onosproject.gui"
                   requires="Trellis-Net-P4-Setup.Initial-Summary-Check"/>
         </group>
 

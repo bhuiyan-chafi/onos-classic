@@ -22,14 +22,14 @@ def gratuitousArp(intf, ip=None, mac=None):
     try:
         sock.bind((intf, socket.SOCK_RAW))
     except:
-        print 'Device does not exist: %s' % intf
+        print('Device does not exist: %s' % intf)
         return
 
     if not ip:
         try:
             ip = getIPAddress(intf)
         except IOError:
-            print 'No IP for %s' % intf
+            print('No IP for %s' % intf)
             return
     packed_ip = pack('!4B', *[int(x) for x in ip.split('.')])
 

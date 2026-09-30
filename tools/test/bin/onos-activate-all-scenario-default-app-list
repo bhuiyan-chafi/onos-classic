@@ -68,7 +68,6 @@ generaldeviceprovider
 gluon
 graphitemetrics
 gui
-gui2
 hostprobingprovider
 hostprovider
 imr

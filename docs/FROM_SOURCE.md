@@ -9,10 +9,10 @@ It is recommended to use a clean system or virtual machine (VM), as the setup co
 
 ## Install the Dependencies
 
-Install the required build dependencies, Java 11 development kit, and Python toolchain:
+Install the required build dependencies, Java 11 development kit, and Python 3 toolchain:
 
 ```bash
-sudo apt update && sudo apt install -y python2 build-essential perl curl wget zip bzip2 openjdk-11-jdk screen xterm
+sudo apt update && sudo apt install -y python3 python-is-python3 build-essential perl curl wget zip bzip2 openjdk-11-jdk screen xterm
 ```
 
 ### Install Bazel
@@ -20,14 +20,14 @@ sudo apt update && sudo apt install -y python2 build-essential perl curl wget zi
 Download the required binary release of Bazel:
 
 ```bash
-wget https://releases.bazel.build/6.0.0/rolling/6.0.0-pre.20220421.3/bazel-6.0.0-pre.20220421.3-linux-x86_64
+wget https://github.com/bazelbuild/bazel/releases/download/6.5.0/bazel-6.5.0-linux-x86_64
 ```
 
 Make the binary executable and move it to `/usr/bin/` so that it is globally available in your `$PATH`:
 
 ```bash
-chmod +x bazel-6.0.0-pre.20220421.3-linux-x86_64
-sudo mv bazel-6.0.0-pre.20220421.3-linux-x86_64 /usr/bin/bazel
+chmod +x bazel-6.5.0-linux-x86_64
+sudo mv bazel-6.5.0-linux-x86_64 /usr/bin/bazel
 ```
 
 Verify the installation:
@@ -101,6 +101,7 @@ When prompted, enter the default password: **`rocks`**.
 ### Access the Web GUI
 
 Open your web browser and navigate to:
+
 - **URL**: [http://localhost:8181/onos/ui](http://localhost:8181/onos/ui)
 - **Username**: `onos` (or `karaf`)
 - **Password**: `rocks` (or `karaf`)

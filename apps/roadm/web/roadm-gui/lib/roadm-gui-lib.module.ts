@@ -17,7 +17,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
-import { Gui2FwLibModule } from 'org_onosproject_onos/web/gui2-fw-lib/public_api';
+import { GuiFwLibModule } from 'org_onosproject_onos/web/gui-fw-lib/public_api';
 import { RoadmDeviceComponent } from './roadm/roadm.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoadmPortComponent } from './port/port.component';
@@ -32,7 +32,7 @@ import { RoadmPortComponent } from './port/port.component';
         RouterModule.forChild([
             {path: '', component: RoadmDeviceComponent},
             {path: 'roadm-port-gui', component: RoadmPortComponent}]),
-        Gui2FwLibModule,
+        GuiFwLibModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule

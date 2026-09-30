@@ -379,8 +379,8 @@ if __name__ == '__main__':
     if len( sys.argv ) >= 2:
         controllers = sys.argv[1:]
     else:
-        print 'Usage: sudo -E python opticalTestBig.py (<Controller IP>)+'
-        print 'Using localhost...\n'
+        print('Usage: sudo -E python opticalTestBig.py (<Controller IP>)+')
+        print('Using localhost...\n')
         controllers = [ '127.0.0.1' ]
 
     setLogLevel( 'info' )

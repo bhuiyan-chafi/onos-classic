@@ -18,13 +18,13 @@ DEFAULT_HOST_BW = 25
 JUMBO_MTU=9000
 
 if 'ONOS_ROOT' not in os.environ:
-    print "Environment var $ONOS_ROOT not set"
+    print("Environment var $ONOS_ROOT not set")
     exit()
 else:
     ONOS_ROOT = os.environ["ONOS_ROOT"]
     sys.path.append(ONOS_ROOT + "/tools/dev/mininet")
 if 'RUN_PACK_PATH' not in os.environ:
-    print "Environment var $RUN_PACK_PATH not set"
+    print("Environment var $RUN_PACK_PATH not set")
     exit()
 else:
     RUN_PACK_PATH = os.environ["RUN_PACK_PATH"]
@@ -130,14 +130,14 @@ class DemoHost(ONOSHost):
         self.cmd("killall arping")
 
     def describe(self):
-        print "**********"
-        print self.name
-        print "default interface: %s\t%s\t%s" % (
+        print("**********")
+        print(self.name)
+        print("default interface: %s\t%s\t%s" % (
             self.defaultIntf().name,
             self.defaultIntf().IP(),
             self.defaultIntf().MAC()
-        )
-        print "**********"
+        ))
+        print("**********")
 
     def getInfiniteCmdBg(self, cmd, logfile="/dev/null", delay=1):
         return "(while [ -e {} ]; " \
@@ -227,7 +227,7 @@ def generateNetcfg(onosIp, net, args):
             }
         }
 
-    print "Writing network config to %s" % TEMP_NETCFG_FILE
+    print("Writing network config to %s" % TEMP_NETCFG_FILE)
     with open(TEMP_NETCFG_FILE, 'w') as tempFile:
         json.dump(netcfg, tempFile, indent=4)
 
@@ -267,7 +267,7 @@ def main(args):
     net.build()
     net.start()
 
-    print "Network started"
+    print("Network started")
 
     # Always generate background pings.
     sleep(3)
@@ -275,7 +275,7 @@ def main(args):
         h1.startPingBg(h2)
         h2.startPingBg(h1)
 
-    print "Background ping started"
+    print("Background ping started")
 
     # Increase the MTU size for INT operation
     if args.pipeconf_id.endswith("int") or args.pipeconf_id.endswith("full"):
@@ -284,22 +284,22 @@ def main(args):
     for h in net.hosts:
         h.startIperfServer()
 
-    print "Iperf servers started"
+    print("Iperf servers started")
 
     if args.bg_traffic:
         sleep(4)
-        print "Starting iperf clients..."
+        print("Starting iperf clients...")
         net.hosts[0].startIperfClient(net.hosts[-1], flowBw="400k",
                                       numFlows=50, duration=10)
 
     generateNetcfg(onosIp, net, args)
 
     if args.netcfg_sleep > 0:
-        print "Waiting %d seconds before pushing config to ONOS..." \
-              % args.netcfg_sleep
+        print("Waiting %d seconds before pushing config to ONOS..." \
+              % args.netcfg_sleep)
         sleep(args.netcfg_sleep)
 
-    print "Pushing config to ONOS..."
+    print("Pushing config to ONOS...")
     call(("%s/onos-netcfg" % RUN_PACK_PATH, onosIp, TEMP_NETCFG_FILE))
 
     if not args.onos_ip:

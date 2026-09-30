@@ -8,7 +8,7 @@ import sys
 
 
 if len(sys.argv) != 7:
-    print "usage: create-intent onos-node name ingressDevice ingressPort egressDevice egressPort"
+    print("usage: create-intent onos-node name ingressDevice ingressPort egressDevice egressPort")
     sys.exit(1)
 
 node = sys.argv[1]
@@ -38,11 +38,11 @@ intentRequest = requests.post('http://' + node + ':8181/onos/v1/intents/',
                               data=intentJson)
 
 if intentRequest.status_code != 201:
-    print intentRequest.text
+    print(intentRequest.text)
     sys.exit(1)
 
 location = intentRequest.headers["location"]
-print "@stc " + name + "Location=" + location
+print("@stc " + name + "Location=" + location)
 sys.exit(0)
 
 

@@ -143,7 +143,7 @@ def is_port_used(sip_uuid, conn_context):
                 if service["end-point"][id]["service-interface-point"]["service-interface-point-uuid"] == sip_uuid:
                     return True
     except KeyError:
-        print "There is no line-side service in ONOS now."
+        print("There is no line-side service in ONOS now.")
     return False
 
 
@@ -239,7 +239,7 @@ def create_client_connection(url_context, url_connectivity):
             used_sip_uuids.add(service["end-point"][0]["service-interface-point"]["service-interface-point-uuid"])
             used_sip_uuids.add(service["end-point"][1]["service-interface-point"]["service-interface-point-uuid"])
     except KeyError:
-        print "There is no existed connectivity service inside ONOS."
+        print("There is no existed connectivity service inside ONOS.")
 
     # select the first available line-side service as bridge. If there is no available line-side service,
     # then only create a client-to-client service for src and dst node.
@@ -260,8 +260,8 @@ def create_client_connection(url_context, url_connectivity):
             if (client_src_sip_uuid not in used_sip_uuids) and (client_dst_sip_uuid not in used_sip_uuids):
                 # If there is no such client-side connection exists
                 # Create new client-side connection directly
-                print "Create client-side connection between %s and %s." % \
-                      (client_src_name["onos-cp"], client_dst_name["onos-cp"])
+                print("Create client-side connection between %s and %s." % \
+                      (client_src_name["onos-cp"], client_dst_name["onos-cp"]))
                 create_input_json = json.dumps(tapi_client_input((client_src_sip_uuid, client_dst_sip_uuid)))
                 resp = requests.post(url_connectivity, data=create_input_json, headers=headers,
                                      auth=('onos', 'rocks'))
@@ -290,10 +290,10 @@ def create_client_connection(url_context, url_connectivity):
         # None case means all client-side services exist.
         raise AssertionError("There is no available client-side service could be created.")
     else:
-        print "Create client-side services:"
-        print "\t- from %s to %s." % (empty_client_src_name["onos-cp"], empty_client_dst_name["onos-cp"])
-        print "This service should go through:"
-        print "\t- %s and %s." % (empty_src_name["onos-cp"], empty_dst_name["onos-cp"])
+        print("Create client-side services:")
+        print("\t- from %s to %s." % (empty_client_src_name["onos-cp"], empty_client_dst_name["onos-cp"]))
+        print("This service should go through:")
+        print("\t- %s and %s." % (empty_src_name["onos-cp"], empty_dst_name["onos-cp"]))
         create_input_json = json.dumps(tapi_client_input((empty_client_src_sip_uuid, empty_client_dst_sip_uuid)))
         resp = requests.post(url_connectivity, data=create_input_json, headers=headers,
                              auth=('onos', 'rocks'))
@@ -348,16 +348,16 @@ def create_line_connection(url_context, url_connectivity):
     # select randomly the src_sip_uuid and dst_sip_uuid with same connection id.
     src_onep, dst_onep, src_sip_uuid, dst_sip_uuid = parse_src_dst(topo)
     while is_port_used(src_sip_uuid, context["tapi-common:context"]["tapi-connectivity:connectivity-context"]):
-        print "Conflict occurs between randomly selected line-side link and existed ones."
+        print("Conflict occurs between randomly selected line-side link and existed ones.")
         src_onep, dst_onep, src_sip_uuid, dst_sip_uuid = parse_src_dst(topo)
 
-    print "\nBuild line-side connectivity:\n|Item|SRC|DST|\n|:--|:--|:--|\n|onos-cp|%s|%s|\n|connection id|%s|%s|\n|sip uuid|%s|%s|" % \
+    print("\nBuild line-side connectivity:\n|Item|SRC|DST|\n|:--|:--|:--|\n|onos-cp|%s|%s|\n|connection id|%s|%s|\n|sip uuid|%s|%s|" % \
           (src_onep["name"][2]["value"], dst_onep["name"][2]["value"],
            src_onep["name"][1]["value"], dst_onep["name"][1]["value"],
-           src_sip_uuid, dst_sip_uuid)
+           src_sip_uuid, dst_sip_uuid))
     create_input_json = json.dumps(tapi_line_input((src_sip_uuid, dst_sip_uuid)))
-    print "\nThe json content of creation operation for line-side connectivity service is \n\t\t%s." % \
-          create_input_json
+    print("\nThe json content of creation operation for line-side connectivity service is \n\t\t%s." % \
+          create_input_json)
     headers = {'Content-type': 'application/json'}
     resp = requests.post(url_connectivity, data=create_input_json, headers=headers, auth=('onos', 'rocks'))
     if resp.status_code != 200:

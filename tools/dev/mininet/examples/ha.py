@@ -200,9 +200,9 @@ class HTTP( Host ):
 
     def stop( self ):
         # XXX is this ever called?
-        print "Stopping HTTP Server..."
-        print self.cmd( 'fg' )
-        print self.cmd( '\x03' )  # ctrl-c
+        print("Stopping HTTP Server...")
+        print(self.cmd( 'fg' ))
+        print(self.cmd( '\x03' ))  # ctrl-c
 
 
 class DynamicONOSNode( onos.ONOSNode ):
@@ -278,7 +278,7 @@ class DynamicONOSNode( onos.ONOSNode ):
                 l.rotate( -1 )
             return perms
 
-        print "Generating %s with %s" % ( location, str(nodes) )
+        print("Generating %s with %s" % ( location, str(nodes) ))
         port = 9876
         ips = [ node.IP() for node in nodes ]
         node = lambda k: { 'id': k, 'ip': k, 'port': port }
@@ -411,7 +411,7 @@ def runTest( args ):
         for node in cluster.activeNodes:
             node.shouldStart = True
     else:
-        print "Incorrect test"
+        print("Incorrect test")
         return
     net.start()
     if args.interactive:

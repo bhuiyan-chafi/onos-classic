@@ -29,15 +29,15 @@ ts_library(
         ],
     ),
     angular_assets = [
-        "//web/gui2-fw-lib:extra_css",
+        "//web/gui-fw-lib:extra_css",
     ] + glob([
         "**/*.css",
         "**/*.html",
     ]),
-    tsconfig = "//web/gui2:tsconfig.json",
+    tsconfig = "//web/gui:tsconfig.json",
     use_angular_plugin = True,
     deps = [
-        "//web/gui2-fw-lib",
+        "//web/gui-fw-lib",
         "@npm//@angular/animations",
         "@npm//@angular/common",
         "@npm//@angular/core",

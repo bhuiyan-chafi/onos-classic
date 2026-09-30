@@ -19,7 +19,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { WelcomeComponent } from './welcome/welcome.component';
-import {Gui2FwLibModule} from 'gui2-fw-lib';
+import {GuiFwLibModule} from 'gui-fw-lib';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import {Gui2FwLibModule} from 'gui2-fw-lib';
   ],
   imports: [
     BrowserModule,
-    Gui2FwLibModule
+    GuiFwLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,7 +3,7 @@
 This application, created from the ONOS UI2 archetype can be deployed as a
 [standalone application](#Standalone Application outside of ONOS) outside of ONOS
 
-To create a GUI within ONOS please see [onos/web/gui2/README.md](onos/web/gui2/README.md)
+To create a GUI within ONOS please see [onos/web/gui/README.md](onos/web/gui/README.md)
 
 There are 2 main parts to this app:
 * An ONOS OSGi Java bundle that is packaged as an ONOS OAR file, and can be deployed
@@ -52,7 +52,7 @@ to the server backend through a WebSocket
  * Passing a number in the request
  * Receiving a JSON object in reply
 
-* Reuse of items from the **gui2-fw-lib** - with LogService, WebSocketService and
+* Reuse of items from the **gui-fw-lib** - with LogService, WebSocketService and
 IconComponent
 
 * The use of a child component (WelcomeComponent) in 3 different ways

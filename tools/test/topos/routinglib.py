@@ -45,7 +45,7 @@ class Router(Host):
         self.cmd('sysctl net.ipv4.ip_forward=1')
         self.cmd('sysctl net.ipv4.conf.all.rp_filter=0')
 
-        for intf, configs in self.interfaces.items():
+        for intf, configs in list(self.interfaces.items()):
             self.cmd('ip addr flush dev %s' % intf)
             self.cmd( 'sysctl net.ipv4.conf.%s.rp_filter=0' % intf )
             
@@ -99,9 +99,9 @@ class QuaggaRouter(Router):
         try:
             original_umask = os.umask(0)
             if (not os.path.isdir(QuaggaRouter.logDir)):
-                os.makedirs(QuaggaRouter.logDir, 0777)
+                os.makedirs(QuaggaRouter.logDir, 0o777)
             if (not os.path.isdir(self.runDir)):
-                os.makedirs(self.runDir, 0777)
+                os.makedirs(self.runDir, 0o777)
         finally:
             os.umask(original_umask)
 
@@ -182,8 +182,8 @@ class BgpProtocol(Protocol):
         conf = ConfigurationWriter(self.configFile)
                     
         def getRouterId(interfaces):
-            intfAttributes = interfaces.itervalues().next()
-            print intfAttributes
+            intfAttributes = next(iter(interfaces.values()))
+            print(intfAttributes)
             if isinstance(intfAttributes, list):
                 # Try use the first set of attributes, but if using vlans they might not have addresses
                 intfAttributes = intfAttributes[1] if not intfAttributes[0]['ipAddrs'] else intfAttributes[0]
@@ -236,8 +236,8 @@ class OspfProtocol(Protocol):
         conf = ConfigurationWriter(self.configFile)
             
         def getRouterId(interfaces):
-            intfAttributes = interfaces.itervalues().next()
-            print intfAttributes
+            intfAttributes = next(iter(interfaces.values()))
+            print(intfAttributes)
             if isinstance(intfAttributes, list):
                 # Try use the first set of attributes, but if using vlans they might not have addresses
                 intfAttributes = intfAttributes[1] if not intfAttributes[0]['ipAddrs'] else intfAttributes[0]
@@ -253,7 +253,7 @@ class OspfProtocol(Protocol):
         conf.writeLine('ospf router-id %s' % getRouterId(self.qr.interfaces))
         conf.writeLine('!')
         
-        for name, intf in self.qr.interfaces.items():
+        for name, intf in list(self.qr.interfaces.items()):
             for ip in intf['ipAddrs']:
                 conf.writeLine('network %s area 0' % ip)
             #if intf['ipAddrs'][0].startswith('192.168'):
@@ -409,7 +409,7 @@ class AutonomousSystem(object):
 
     @staticmethod
     def generatePeeringAddresses():
-        network = ip_network(u'10.0.%s.0/24' % AutonomousSystem.psIdx)
+        network = ip_network('10.0.%s.0/24' % AutonomousSystem.psIdx)
         AutonomousSystem.psIdx += 1
         
         return ip_interface('%s/%s' % (network[1], network.prefixlen)), \
@@ -456,7 +456,7 @@ class BasicAutonomousSystem(AutonomousSystem):
         intfs = {}
         
         router = self.routers[1]
-        for i, router in self.routers.items():
+        for i, router in list(self.routers.items()):
         
             #routerName = 'r%i%i' % (self.num, i)
             routerName = 'r%i' % self.num
@@ -465,12 +465,12 @@ class BasicAutonomousSystem(AutonomousSystem):
                 
             hostName = 'h%i' % self.num
         
-            for j, interface in router.interfaces.items():
+            for j, interface in list(router.interfaces.items()):
                 nativeAddresses = interface.addressesByVlan.pop(None, [])
                 peeringIntf = [{'mac' : '00:00:%02x:00:%02x:%02x' % (self.num, i, j),
                                'ipAddrs' : nativeAddresses}]
                 
-                for vlan, addresses in interface.addressesByVlan.items():
+                for vlan, addresses in list(interface.addressesByVlan.items()):
                     peeringIntf.append({'vlan':vlan,
                                         'mac':'00:00:%02x:%02x:%02x:%02x' % (self.num, vlan, i, j),
                                         'ipAddrs':addresses})
@@ -486,7 +486,7 @@ class BasicAutonomousSystem(AutonomousSystem):
                 internalIntf = {'ipAddrs' : internalAddresses}
         
                 # This is the configuration of the next interface after all the peering interfaces
-                intfs.update({'%s-eth%s' % (routerName, len(router.interfaces.keys())) : internalIntf})
+                intfs.update({'%s-eth%s' % (routerName, len(list(router.interfaces.keys()))) : internalIntf})
     
             routerNode = topology.addHost(routerName,  
                                   asNum=self.asNum, neighbors=router.neighbors,
@@ -550,15 +550,15 @@ class SdnAutonomousSystem(AutonomousSystem):
         self.peerIntfConfig = peerIntfConfig
         self.withFpm = withFpm
         self.externalOnos= externalOnos
-        self.internalPeeringSubnet = ip_network(u'1.1.1.0/24')
+        self.internalPeeringSubnet = ip_network('1.1.1.0/24')
         
-        for router in self.routers.values():
+        for router in list(self.routers.values()):
             # Add iBGP sessions to ONOS nodes
             for onosIp in onosIps:
                 router.neighbors.append({'address':onosIp, 'as':asNum, 'port':2000})
                 
             # Add iBGP sessions to other BGP speakers
-            for i, router2 in self.routers.items():
+            for i, router2 in list(self.routers.items()):
                 if router == router2:
                     continue
                 ip = AutonomousSystem.getIthAddress(self.internalPeeringSubnet, 10+i)
@@ -568,7 +568,7 @@ class SdnAutonomousSystem(AutonomousSystem):
         
         natIp = AutonomousSystem.getLastAddress(self.internalPeeringSubnet)
         
-        for i, router in self.routers.items():
+        for i, router in list(self.routers.items()):
             name = 'bgp%s' % i
             
             ip = AutonomousSystem.getIthAddress(self.internalPeeringSubnet, 10+i)
@@ -580,7 +580,7 @@ class SdnAutonomousSystem(AutonomousSystem):
                 eth1 = [{ 'mac':'00:00:00:00:00:%02x' % i, 
                          'ipAddrs' : nativeAddresses }]
                 
-                for vlan, addresses in router.interfaces[1].addressesByVlan.items():
+                for vlan, addresses in list(router.interfaces[1].addressesByVlan.items()):
                     eth1.append({'vlan':vlan,
                                 'mac':'00:00:00:%02x:%02x:00' % (i, vlan),
                                 'ipAddrs':addresses})

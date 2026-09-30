@@ -281,8 +281,7 @@ APP_MAP = {
     "//apps/workflow:onos-apps-workflow-oar": [],
     "//apps/yang-gui:onos-apps-yang-gui-oar": [],
     "//apps/yang:onos-apps-yang-oar": [],
-    "//web/gui:onos-web-gui-oar": ["sona", "sdfabric"],
-    "//web/gui2:onos-web-gui2-oar": ["stratum", "sdfabric"],
+    "//web/gui:onos-web-gui-oar": ["sona", "sdfabric", "stratum"],
 }
 
 #

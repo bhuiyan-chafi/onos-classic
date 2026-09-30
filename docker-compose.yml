@@ -1,0 +1,42 @@
+
+# =============================================================================
+# ONOS Classic: Local Development & Quick-Spin Compose Environment
+# Part of Phase 0: Baseline & Quick-Win Developer Relief
+# =============================================================================
+
+services:
+  onos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JOBS: 4
+        PROFILE: default
+    image: onos-classic:local
+    container_name: onos-controller
+    hostname: onos
+    ports:
+      - "8181:8181"   # ONOS Web GUI & REST API
+      - "8101:8101"   # Apache Karaf SSH CLI
+      - "6653:6653"   # OpenFlow Southbound Protocol
+      - "6640:6640"   # OVSDB Southbound Protocol
+      - "9876:9876"   # Atomix Intra-Cluster Communication
+    environment:
+      - ONOS_APPS=drivers,openflow,gui
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f -u onos:rocks http://localhost:8181/onos/v1/cluster || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      labnet:
+        ipv4_address: 172.28.0.11
+
+networks:
+  labnet:
+    name: labnet
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

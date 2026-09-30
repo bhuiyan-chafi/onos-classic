@@ -32,7 +32,7 @@ var testing_1 = require("@angular/core/testing");
 var welcome_component_1 = require("./welcome.component");
 var router_1 = require("@angular/router");
 var rxjs_1 = require("rxjs");
-var gui2_fw_lib_1 = require("gui2-fw-lib");
+var gui_fw_lib_1 = require("gui-fw-lib");
 var animations_1 = require("@angular/platform-browser/animations");
 var forms_1 = require("@angular/forms");
 var testing_2 = require("@angular/router/testing");
@@ -72,24 +72,24 @@ describe('WelcomeComponent', function () {
                 absUrl: 'ws://foo:123/onos/ui/websock/path'
             }
         };
-        fs = new gui2_fw_lib_1.FnService(ar, logSpy, windowMock);
+        fs = new gui_fw_lib_1.FnService(ar, logSpy, windowMock);
         testing_1.TestBed.configureTestingModule({
             imports: [
                 animations_1.BrowserAnimationsModule,
                 forms_1.FormsModule,
                 testing_2.RouterTestingModule,
-                gui2_fw_lib_1.Gui2FwLibModule
+                gui_fw_lib_1.GuiFwLibModule
             ],
             declarations: [welcome_component_1.WelcomeComponent],
             providers: [
-                { provide: gui2_fw_lib_1.FnService, useValue: fs },
-                { provide: gui2_fw_lib_1.LogService, useValue: logSpy },
-                { provide: gui2_fw_lib_1.IconService, useClass: MockIconService },
+                { provide: gui_fw_lib_1.FnService, useValue: fs },
+                { provide: gui_fw_lib_1.LogService, useValue: logSpy },
+                { provide: gui_fw_lib_1.IconService, useClass: MockIconService },
                 { provide: 'Window', useValue: windowMock },
             ]
         })
             .compileComponents();
-        logServiceSpy = testing_1.TestBed.get(gui2_fw_lib_1.LogService);
+        logServiceSpy = testing_1.TestBed.get(gui_fw_lib_1.LogService);
     }));
     beforeEach(function () {
         fixture = testing_1.TestBed.createComponent(welcome_component_1.WelcomeComponent);

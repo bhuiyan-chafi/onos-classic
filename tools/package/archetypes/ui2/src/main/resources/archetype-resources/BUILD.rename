@@ -4,7 +4,7 @@ BUNDLES = [
 
 onos_app(
     category = "Graphical User Interface",
-    description = "ONOS OSGi GUI2 Custom-View app ${artifactId}.",
+    description = "ONOS OSGi GUI Custom-View app ${artifactId}.",
     included_bundles = BUNDLES,
     title = "${artifactId} Application",
     url = "http://onosproject.org",

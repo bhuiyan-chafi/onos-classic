@@ -1634,33 +1634,9 @@
         </group>
 
 
-        <group name="App-Activate-All.gui2" requires="App-Activate-All.gui">
-           <step name="App-Activate-All.Activate-gui2"
-                 exec="onos ${OCI} app activate org.onosproject.gui2" requires="App-Activate-All.gui"/>
-           <group name="App-Activate-All.App-Check-gui2" requires="App-Activate-All.Activate-gui2">
-              <parallel var="${OC#}">
-                 <step name="App-Activate-All.App-Check-${#}-gui2"
-                       exec="onos-check-apps ${OC#} gui2 includes"/>
-                 <step name="App-Activate-All.Check-Logs-${#}-gui2" exec="onos-check-logs ${OC#}"/>
-              </parallel>
-           </group>
-           <step name="App-Activate-All.App-Deactivate-gui2"
-                 exec="onos ${OCI} app deactivate org.onosproject.gui2" requires="App-Activate-All.App-Check-gui2"/>
-           <step name="App-Activate-All.Wait-For-Deactivate-gui2"
-                 exec="onos-check-component-count ${OCI} ${startingcount}" requires="App-Activate-All.App-Deactivate-gui2"/>      
-           <group name="App-Activate-All.App-Check-After-gui2" requires="App-Activate-All.Wait-For-Deactivate-gui2">
-              <parallel var="${OC#}">
-                 <step name="App-Activate-All.Check-Logs-After-${#}-gui2" exec="onos-check-logs ${OC#}"/>
-              </parallel>
-           </group>
-           <step name="App-Activate-All.Minimal-Apps-gui2" requires="App-Activate-All.App-Deactivate-gui2"
-                 exec="onos-set-up-minimal-apps ${OCI}"/>
-        </group>
-
-
-        <group name="App-Activate-All.hostprobingprovider" requires="App-Activate-All.gui2">
+        <group name="App-Activate-All.hostprobingprovider" requires="App-Activate-All.gui">
            <step name="App-Activate-All.Activate-hostprobingprovider"
-                 exec="onos ${OCI} app activate org.onosproject.hostprobingprovider" requires="App-Activate-All.gui2"/>
+                 exec="onos ${OCI} app activate org.onosproject.hostprobingprovider" requires="App-Activate-All.gui"/>
            <group name="App-Activate-All.App-Check-hostprobingprovider" requires="App-Activate-All.Activate-hostprobingprovider">
               <parallel var="${OC#}">
                  <step name="App-Activate-All.App-Check-${#}-hostprobingprovider"

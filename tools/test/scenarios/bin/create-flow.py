@@ -8,7 +8,7 @@ import sys
 
 
 if len(sys.argv) != 6:
-    print "usage: create-flow onos-node name device in-port out-port"
+    print("usage: create-flow onos-node name device in-port out-port")
     sys.exit(1)
 
 node = sys.argv[1]
@@ -47,11 +47,11 @@ flowRequest = requests.post('http://' + node + ':8181/onos/v1/flows/' + device,
                               params=payload)
 
 if flowRequest.status_code != 201:
-    print flowRequest.text
+    print(flowRequest.text)
     sys.exit(1)
 
 location = flowRequest.headers["location"]
-print "@stc " + name + "Location=" + location
+print("@stc " + name + "Location=" + location)
 sys.exit(0)
 
 

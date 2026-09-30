@@ -10,8 +10,8 @@ export ONOS_ROOT=${ONOS_ROOT:-~/onos-b5g-open}
 ONOS_ROOT=$(pushd $ONOS_ROOT >/dev/null && pwd -P && popd >/dev/null)
 
 # Rely on developer preference for automatically ignited apps
-# Default to drivers and gui2
-export ONOS_APPS=${ONOS_APPS:-drivers,openflow,gui2}
+# Default to drivers and gui
+export ONOS_APPS=${ONOS_APPS:-drivers,openflow,gui}
 
 export MAVEN=${MAVEN:-~/Applications/apache-maven-3.3.9}
 

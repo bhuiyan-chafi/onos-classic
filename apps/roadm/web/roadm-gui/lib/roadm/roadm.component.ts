@@ -20,7 +20,7 @@ import {
     LogService,
     WebSocketService,
     SortDir, TableBaseImpl, TableResponse
-} from 'org_onosproject_onos/web/gui2-fw-lib/public_api';
+} from 'org_onosproject_onos/web/gui-fw-lib/public_api';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -59,8 +59,8 @@ interface RoadmDevice {
     selector: 'roadm-device',
     templateUrl: './roadm.component.html',
     styleUrls: ['./roadm.component.css', './roadm.theme.css',
-        '../../../../../../web/gui2-fw-lib/lib/widget/table.css',
-        '../../../../../../web/gui2-fw-lib/lib/widget/table.theme.css'
+        '../../../../../../web/gui-fw-lib/lib/widget/table.css',
+        '../../../../../../web/gui-fw-lib/lib/widget/table.theme.css'
     ]
 })
 export class RoadmDeviceComponent extends TableBaseImpl implements OnInit, OnDestroy {

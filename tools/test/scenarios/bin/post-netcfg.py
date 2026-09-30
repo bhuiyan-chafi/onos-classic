@@ -6,7 +6,7 @@ from requests.auth import HTTPBasicAuth
 import sys
 
 if len(sys.argv) != 3:
-    print "usage: post-netcfg onos-node json-file-name"
+    print("usage: post-netcfg onos-node json-file-name")
     sys.exit(1)
 
 node = sys.argv[1]
@@ -20,7 +20,7 @@ request = requests.post('http://' + node + ':8181/onos/v1/network/configuration'
                         data=configJson)
 
 if request.status_code != 200:
-    print request.text
+    print(request.text)
     sys.exit(1)
 
 sys.exit(0)

@@ -26,6 +26,6 @@
   <artifactId>onos-ui2-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <description>ONOS GUI2 Custom-View overlay archetype</description>
+  <description>ONOS GUI Custom-View overlay archetype</description>
 
 </project>

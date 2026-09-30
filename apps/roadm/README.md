@@ -31,7 +31,7 @@ The JavaScript GUI library roadm-gui-lib-1.0.0.tgz may be included in a
 
 Then in the main folder of the new Angular app run
 ```bash
-npm install roadm-gui-lib gui2-fw-lib d3
+npm install roadm-gui-lib gui-fw-lib d3
 ```
 
 ### Add to routing
@@ -54,7 +54,7 @@ in the imports section at the top of the same file.
 as **\<a routerLink="/roadm-gui" routerLinkActive="active">roadm page\</a>**
 before \<router-outlet>
 
-### Add gui2-fw-lib to module
+### Add gui-fw-lib to module
 * In the Angular app's main module **src/app/app.module.ts** add to the providers section:
 ```angular2
   providers: [
@@ -64,11 +64,11 @@ before \<router-outlet>
 ```
 and to the imports section:
 ```angular2
-    Gui2FwLibModule
+    GuiFwLibModule
 ```
 and to the import section:
 ```angular2
-import { Gui2FwLibModule, ConsoleLoggerService, LogService } from 'gui2-fw-lib';
+import { GuiFwLibModule, ConsoleLoggerService, LogService } from 'gui-fw-lib';
 ```
 
 ### Deploy
@@ -125,7 +125,7 @@ end of the **ONOS_APPS** section as:
 "//apps/roadm:onos-apps-roadm-oar",
 ```
 
-In the file **~/onos/web/gui2/BUILD** in the *genrule* section **_onos-gui2-ng-build**
+In the file **~/onos/web/gui/BUILD** in the *genrule* section **_onos-gui-ng-build**
 add to the **srcs** section:
 ```
 "//apps/roadm/web/roadm-gui:roadm-gui-lib-build",
@@ -142,7 +142,7 @@ and in the **cmd** section of the same *genrule* add the following 3 lines
 ### Add to routing
 Finally to use the roadm-gui-lib in the ONOS GUI, add it to the Angular
 Router
-* Add it as a route to **~/onos/web/gui2/src/main/webapp/app/onos-routing.module.ts**
+* Add it as a route to **~/onos/web/gui/src/main/webapp/app/onos-routing.module.ts**
 in the "routes" array as:
 ```angular2
   {
@@ -184,8 +184,8 @@ here so that applications are not loaded until they are first used).
 ### Rebuild
 To rebuild and run the **web** side of the application do:
 ```bash
-bazel build //web/gui2:onos-web-gui2-oar && \
-    onos-app localhost reinstall! bazel-bin/web/gui2/onos-web-gui2-oar.oar
+bazel build //web/gui:onos-web-gui-oar && \
+    onos-app localhost reinstall! bazel-bin/web/gui/onos-web-gui-oar.oar
 ```
 
 To rebuild and run the **server** side of the application do:
@@ -204,7 +204,7 @@ to the server backend through a WebSocket
  * Passing a number in the request
  * Receiving a JSON object in reply
 
-* Reuse of items from the **gui2-fw-lib** - with LogService, WebSocketService and
+* Reuse of items from the **gui-fw-lib** - with LogService, WebSocketService and
 IconComponent
 
 * The use of a child component (WelcomeComponent) in 3 different ways

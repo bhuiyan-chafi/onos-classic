@@ -20,7 +20,7 @@ RUN echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.lis
     && rm -rf /var/lib/apt/lists/*
 
 # Download and setup Bazel
-RUN wget https://releases.bazel.build/6.0.0/rolling/6.0.0-pre.20220421.3/bazel-6.0.0-pre.20220421.3-linux-x86_64 -O /usr/bin/bazel \
+RUN wget https://github.com/bazelbuild/bazel/releases/download/6.5.0/bazel-6.5.0-linux-x86_64 -O /usr/bin/bazel \
     && chmod +x /usr/bin/bazel
 
 # Define environment variables

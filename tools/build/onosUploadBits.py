@@ -29,7 +29,7 @@ def findBits( path, target_version=None ):
         if match:
             version = match.group(1)
             if target_version is not None and version != target_version:
-                print 'Skipping %s...' % filePath
+                print('Skipping %s...' % filePath)
                 continue
             build = match.group(2)
             if build:

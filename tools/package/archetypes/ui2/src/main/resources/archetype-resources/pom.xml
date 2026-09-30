@@ -42,7 +42,7 @@
     <version>${version}</version>
     <packaging>pom</packaging>
 
-    <description>ONOS OSGi GUI2 Custom-View bundle archetype</description>
+    <description>ONOS OSGi GUI Custom-View bundle archetype</description>
     <url>http://onosproject.org</url>
 
     <modules>

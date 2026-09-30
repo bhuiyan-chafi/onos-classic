@@ -19,9 +19,9 @@ ARG PROFILE=default
 ARG TAG=11.0.13-11.52.13
 ARG JAVA_PATH=/usr/lib/jvm/zulu11
 
-# First stage is the build environment.
+# First stage is the toolchain base environment.
 # zulu-openjdk images are based on Ubuntu.
-FROM azul/zulu-openjdk:${TAG} as builder
+FROM azul/zulu-openjdk:${TAG} as builder-base
 
 ENV BUILD_DEPS \
     ca-certificates \
@@ -34,10 +34,17 @@ ENV BUILD_DEPS \
     unzip
 RUN apt-get update && apt-get install -y ${BUILD_DEPS}
 
-# Install Bazelisk, which will download the version of bazel specified in
-# .bazelversion
-RUN curl -L -o bazelisk https://github.com/bazelbuild/bazelisk/releases/download/v1.11.0/bazelisk-linux-amd64
-RUN chmod +x bazelisk && mv bazelisk /usr/bin
+ARG BAZEL_VERSION=6.5.0
+
+# Install Bazel for target architecture from official GitHub releases
+RUN ARCH=$(dpkg --print-architecture) && \
+    if [ "$ARCH" = "amd64" ]; then BAZEL_ARCH="x86_64"; else BAZEL_ARCH="arm64"; fi && \
+    curl -L -o /usr/bin/bazel "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-linux-${BAZEL_ARCH}" && \
+    chmod +x /usr/bin/bazel && \
+    ln -sf /usr/bin/bazel /usr/bin/bazelisk
+
+# Second stage compiles ONOS
+FROM builder-base as builder
 
 # Build-stage environment variables
 ENV ONOS_ROOT /src/onos

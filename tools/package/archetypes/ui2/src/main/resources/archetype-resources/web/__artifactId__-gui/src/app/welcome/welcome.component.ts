@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {LogService} from 'gui2-fw-lib';
+import {LogService} from 'gui-fw-lib';
 
 @Component({
   selector: '${artifactId}-app-welcome',

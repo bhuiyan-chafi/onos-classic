@@ -21,7 +21,7 @@ import {
     WebSocketService,
     IconService,
     SortDir, TableBaseImpl, TableResponse
-} from 'org_onosproject_onos/web/gui2-fw-lib/public_api';
+} from 'org_onosproject_onos/web/gui-fw-lib/public_api';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -71,8 +71,8 @@ const defaultPortPrefsState = {
     selector: 'roadm-port',
     templateUrl: './port.component.html',
     styleUrls: ['./port.component.css',
-        '../../../../../../web/gui2-fw-lib/lib/widget/table.theme.css',
-        '../../../../../../web/gui2-fw-lib/lib/widget/table.css',
+        '../../../../../../web/gui-fw-lib/lib/widget/table.theme.css',
+        '../../../../../../web/gui-fw-lib/lib/widget/table.css',
     ]
 })
 export class RoadmPortComponent extends TableBaseImpl implements OnInit, OnDestroy {

@@ -75,6 +75,6 @@ if __name__ == '__main__':
                 if level and (not elem.tail or not elem.tail.strip()):
                     elem.tail = i
 
-        print 'Writing to file:', outputFile
+        print('Writing to file:', outputFile)
         indent(outputTree)
         ET.dump(outputTree)

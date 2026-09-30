@@ -7,10 +7,10 @@ import json
 # TODO: if none given, use OCI
 try:
     onosIp = sys.argv[1]
-    print "Reading hosts view from ONOS node " + onosIp + ":"
+    print("Reading hosts view from ONOS node " + onosIp + ":")
 except Exception as e:
-    print "Error reading ONOS IP arguement"
-    print e
+    print("Error reading ONOS IP arguement")
+    print(e)
 # Grab the json objects from ONOS
 output = os.popen("onos " + onosIp + " \"hosts -j\"" )
 hosts = json.loads( output.read() )
@@ -49,7 +49,7 @@ for i in range( 1, 29 ):  # hosts 1 through 28
 
 if hosts or "Error" not in hosts:
     if hosts == []:
-        print "WARNING: There are no hosts discovered"
+        print("WARNING: There are no hosts discovered")
     else:
         for host in hosts:
             mac = None
@@ -73,19 +73,19 @@ if hosts or "Error" not in hosts:
                 # Now check if this matches where they should be
                 if mac and device and port:
                     if device != mappings[ str( mac ) ]:
-                        print "The attachment device is incorrect for host " + str( mac ) +\
-                              ". Expected: " + mappings[ str( mac ) ] + "; Actual: " + device
+                        print("The attachment device is incorrect for host " + str( mac ) +\
+                              ". Expected: " + mappings[ str( mac ) ] + "; Actual: " + device)
                         hostAttachment = False
                     if str( port ) != "1":
-                        print "The attachment port is incorrect for host " + str( mac ) +\
-                              ". Expected: 1; Actual: " + str( port)
+                        print("The attachment port is incorrect for host " + str( mac ) +\
+                              ". Expected: 1; Actual: " + str( port))
                         hostAttachment = False
                 else:
                     hostAttachment = False
             except AssertionError as e:
-                print "ERROR: Json object not as expected:"
-                print e
-                print "host object: " + repr( host )
+                print("ERROR: Json object not as expected:")
+                print(e)
+                print("host object: " + repr( host ))
                 hostAttachment = False
 else:
-    print "No hosts json output or \"Error\" in output. hosts = " + repr( hosts )
+    print("No hosts json output or \"Error\" in output. hosts = " + repr( hosts ))

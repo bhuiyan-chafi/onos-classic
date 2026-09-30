@@ -6,7 +6,7 @@ import sys
 from requests.auth import HTTPBasicAuth
 
 if len(sys.argv) != 7:
-    print "usage: find-link onos-node name src-device-id src-port dst-device-id dst-port"
+    print("usage: find-link onos-node name src-device-id src-port dst-device-id dst-port")
     sys.exit(1)
 
 node = sys.argv[1]
@@ -22,7 +22,7 @@ linksRequest = requests.get('http://' + node + ':8181/onos/v1/links?device=' +
                             auth=HTTPBasicAuth('onos', 'rocks'))
 
 if linksRequest.status_code != 200:
-    print linksRequest.text
+    print(linksRequest.text)
     sys.exit(1)
 
 linksJson = linksRequest.json()
@@ -30,12 +30,12 @@ linksJson = linksRequest.json()
 for link in linksJson["links"]:
     if srcDeviceId == link["src"]["device"]:
         if dstDeviceId == link["dst"]["device"]:
-            print "@stc " + name + "SrcDevice=" + link["src"]["device"]
-            print "@stc " + name + "SrcPort=" + link["src"]["port"]
-            print "@stc " + name + "DstDevice=" + link["dst"]["device"]
-            print "@stc " + name + "DstPort=" + link["dst"]["port"]
-            print "@stc " + name + "Type=" + link["type"]
-            print "@stc " + name + "State=" + link["state"]
+            print("@stc " + name + "SrcDevice=" + link["src"]["device"])
+            print("@stc " + name + "SrcPort=" + link["src"]["port"])
+            print("@stc " + name + "DstDevice=" + link["dst"]["device"])
+            print("@stc " + name + "DstPort=" + link["dst"]["port"])
+            print("@stc " + name + "Type=" + link["type"])
+            print("@stc " + name + "State=" + link["state"])
             sys.exit(0)
 
 sys.exit(1)

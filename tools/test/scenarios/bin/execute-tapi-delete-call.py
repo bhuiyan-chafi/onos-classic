@@ -6,16 +6,16 @@ import json
 import requests
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
-    print "usage: execute-tapi-delete-call <onos-node> <deletion-type> [uuid]"
-    print "\t- <onos-node> is onos IP. 'localhost' is invalid."
-    print "\t- <deletion-type> is one of {line, client, both}, which mean line-side deletion, " \
-          "client-side deletion, and all deletion respectively."
-    print "\t- [uuid] is the created service uuid, which is optional. If uuid is empty, " \
-          "all connectivity services with <deletion-type> will be deleted."
-    print "\t  If [uuid] is not empty, and <deletion-type> is 'both', this script doesn't work."
-    print "\t  Otherwise, delete line-side or client-side connectivity with specific uuid."
-    print "For example, if we want to delete all client-side services on local host, the command should be:"
-    print "\t python execute-tapi-delete-call.py 127.0.0.1 client"
+    print("usage: execute-tapi-delete-call <onos-node> <deletion-type> [uuid]")
+    print("\t- <onos-node> is onos IP. 'localhost' is invalid.")
+    print("\t- <deletion-type> is one of {line, client, both}, which mean line-side deletion, " \
+          "client-side deletion, and all deletion respectively.")
+    print("\t- [uuid] is the created service uuid, which is optional. If uuid is empty, " \
+          "all connectivity services with <deletion-type> will be deleted.")
+    print("\t  If [uuid] is not empty, and <deletion-type> is 'both', this script doesn't work.")
+    print("\t  Otherwise, delete line-side or client-side connectivity with specific uuid.")
+    print("For example, if we want to delete all client-side services on local host, the command should be:")
+    print("\t python execute-tapi-delete-call.py 127.0.0.1 client")
     sys.exit(1)
 
 
@@ -55,8 +55,8 @@ def find_sip(sip_uuid, sips):
 #
 def post_deletion(service_uuid, del_request):
     delete_input_json = json.dumps(tapi_deletion_input(service_uuid))
-    print "\nThe json content of deletion operation for connectivity service is \n\t\t%s." % \
-          delete_input_json
+    print("\nThe json content of deletion operation for connectivity service is \n\t\t%s." % \
+          delete_input_json)
     headers = {'Content-type': 'application/json'}
     resp = requests.post(del_request, data=delete_input_json, headers=headers, auth=('onos', 'rocks'))
     if resp.status_code != 200:
@@ -79,7 +79,7 @@ sips = context["service-interface-point"]
 try:
     services = context["tapi-connectivity:connectivity-context"]["connectivity-service"]
 except KeyError:
-    print "Warning - there is no connectivity service in ONOS (%s)." % node
+    print("Warning - there is no connectivity service in ONOS (%s)." % node)
     sys.exit(0)
 # 3. handle deletion requests according to <deletion-type> and [uuid]
 if serv_uuid is None:
@@ -93,13 +93,13 @@ if serv_uuid is None:
            ((del_type == "client" or del_type == "both") and tapiHelper.is_dsr_media(sip)):
             json_resp = post_deletion(service["uuid"], delete_request)
             del_num += 1
-            print "Returns json string for deletion operations is\n %s\n" % json_resp
+            print("Returns json string for deletion operations is\n %s\n" % json_resp)
     if del_num == 0:
-        print "Warning - there is no %s-side connectivity servicein ONOS (%s)." % (del_type, node)
+        print("Warning - there is no %s-side connectivity servicein ONOS (%s)." % (del_type, node))
 else:
     # If [uuid] is not empty, check the <deletion-type>
     if del_type == "both":
-        print "Error - The option 'both' is illegal when [uuid] is assigned."
+        print("Error - The option 'both' is illegal when [uuid] is assigned.")
     else:
         is_del = False
         for service in services:
@@ -110,7 +110,7 @@ else:
                    (del_type == "client" and tapiHelper.is_dsr_media(sip)):
                     json_resp = post_deletion(service["uuid"], delete_request)
                     is_del = True
-                    print "Returns json string for deletion operations is\n %s\n" % json_resp
+                    print("Returns json string for deletion operations is\n %s\n" % json_resp)
                     break
         if not is_del:
-            print "Warning - Cannot find %s-side connectivity service with service uuid %s." % (del_type, serv_uuid)
+            print("Warning - Cannot find %s-side connectivity service with service uuid %s." % (del_type, serv_uuid))

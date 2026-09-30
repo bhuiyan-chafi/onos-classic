@@ -2,12 +2,12 @@
 
 import requests
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from requests.auth import HTTPBasicAuth
 
 if len(sys.argv) != 5:
-    print "usage: verify-topo-links onos-node cluster-id first-index last-index"
+    print("usage: verify-topo-links onos-node cluster-id first-index last-index")
     sys.exit(1)
 
 node = sys.argv[1]
@@ -23,26 +23,26 @@ topoRequest = requests.get('http://' + node + ':8181/onos/v1/topology/clusters/'
                            auth=HTTPBasicAuth('onos', 'rocks'))
 
 if topoRequest.status_code != 200:
-    print topoRequest.text
+    print(topoRequest.text)
     sys.exit(1)
 
 topoJson = topoRequest.json()
 
 for deviceIndex in range(first, last+1):
     lookingFor = "of:" + format(deviceIndex, '016x')
-    print lookingFor
+    print(lookingFor)
     for arrayIndex in range(0, len(topoJson["devices"])):
         device = topoJson["devices"][arrayIndex]
         if device == lookingFor:
             found = found + 1
-            print "Match found for " + device
+            print("Match found for " + device)
             break
 
 
 if found == last - first:
     sys.exit(0)
 
-print "Found " + str(found) + " matches, need " + str(last - first)
+print("Found " + str(found) + " matches, need " + str(last - first))
 sys.exit(2)
 
 

@@ -53,34 +53,34 @@ class Domain(object):
         return self.__dId
 
     def getControllers(self, name=None):
-        return self.__cmap.values() if not name else self.__cmap.get(name)
+        return list(self.__cmap.values()) if not name else self.__cmap.get(name)
 
     def getSwitches(self, name=None):
-        return self.__smap.values() if not name else self.__smap.get(name)
+        return list(self.__smap.values()) if not name else self.__smap.get(name)
 
     def getHosts(self, name=None):
-        return self.__hmap.values() if not name else self.__hmap.get(name)
+        return list(self.__hmap.values()) if not name else self.__hmap.get(name)
 
     def injectInto(self, net):
         """ Adds available topology info to a supplied Mininet object. """
         # add switches, hosts, then links to mininet object
-        for sw, args in self.__switches.iteritems():
+        for sw, args in self.__switches.items():
             self.__smap[sw] = net.addSwitch(sw, **args)
-        for h, args in self.__hosts.iteritems():
+        for h, args in self.__hosts.items():
             self.__hmap[h] = net.addHost(h, **args)
-        for l, args in self.__links.iteritems():
+        for l, args in self.__links.items():
             src = self.__smap.get(l[0])
             dst = self.__smap.get(l[1])
             net.addLink(src if src else self.__hmap.get(l[0]),
                          dst if dst else self.__hmap.get(l[1]), **args)
         # then controllers
-        for c, args in self.__ctrls.iteritems():
+        for c, args in self.__ctrls.items():
             self.__cmap[c] = net.addController(c, **args)
 
     def start(self):
         """ starts the switches with the correct controller. """
-        map(lambda c: c.start(), self.__cmap.values())
-        map(lambda s: s.start(self.__cmap.values()), self.__smap.values())
+        list(map(lambda c: c.start(), list(self.__cmap.values())))
+        list(map(lambda s: s.start(list(self.__cmap.values())), list(self.__smap.values())))
 
     def build(self, *args):
         """ override for custom topology, similar to Topo """
@@ -216,7 +216,7 @@ def setup(argv):
 
     # fire everything up
     net.build()
-    map(lambda x: x.start(), domains)
+    list(map(lambda x: x.start(), domains))
 
     # create a minimal copy of the network for configuring LINC.
     cfgnet = Mininet()
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     setLogLevel('info')
     import sys
     if len(sys.argv) < 5:
-        print ("Usage: sudo -E ./metro.py ctl-set1 ... ctl-set4\n\n",
-                "Where ctl-set are comma-separated controller IP's")
+        print(("Usage: sudo -E ./metro.py ctl-set1 ... ctl-set4\n\n",
+                "Where ctl-set are comma-separated controller IP's"))
     else:
         setup(sys.argv)

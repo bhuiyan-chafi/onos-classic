@@ -137,7 +137,7 @@ def progress(t):
         t -= 1
         sys.stdout.flush()
         sleep(1)
-    print
+    print()
 
 def formatBw( bw ):
     bw = float(bw)
@@ -221,7 +221,7 @@ def parse_args():
 
 def run( topo, controllers=None, link=TCLink, autoSetMacs=True):
     if not topo:
-        print 'Need to provide a topology'
+        print('Need to provide a topology')
         exit(1)
 
     args = parse_args()
@@ -230,14 +230,14 @@ def run( topo, controllers=None, link=TCLink, autoSetMacs=True):
         controllers = args.ipAddrs
 
     if not controllers and args.clusterSize < 1:
-        print 'Need to provide a list of controller IPs, or define a cluster size.'
+        print('Need to provide a list of controller IPs, or define a cluster size.')
         exit( 1 )
 
     setLogLevel( 'info' )
 
     if args.clusterSize > 0:
         if 'ONOS_ROOT' not in os.environ:
-            print "Environment var $ONOS_ROOT not set (needed to import onos.py)"
+            print("Environment var $ONOS_ROOT not set (needed to import onos.py)")
             exit( 1 )
         sys.path.append(os.environ["ONOS_ROOT"] + "/tools/dev/mininet")
         from onos import ONOSCluster, ONOSOVSSwitch, ONOSCLI

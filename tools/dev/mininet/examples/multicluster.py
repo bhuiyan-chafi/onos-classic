@@ -85,7 +85,7 @@ def do_controllers( self, line ):
         cmap.setdefault( c, [] ).append( s.name )
     for c in sorted( cmap.keys() ):
         switches = ' '.join( cmap[ c ] )
-        print '%s: %s' % ( c, switches )
+        print('%s: %s' % ( c, switches ))
 
 ONOSCLI.do_controllers = do_controllers
 

@@ -1,9 +1,5 @@
 workspace(
     name = "org_onosproject_onos",
-    managed_directories = {
-        "@gui1_npm": ["tools/gui/node_modules"],
-        "@npm": ["web/gui2/node_modules"],
-    },
 )
 
 load("//tools/build/bazel:bazel_version.bzl", "check_bazel_version")
@@ -123,7 +119,7 @@ load("//tools/build/bazel:gnoi_workspace.bzl", "generate_gnoi")
 
 generate_gnoi()
 
-# For GUI2 build
+# For GUI build
 RULES_NODEJS_VERSION = "2.3.2"
 
 RULES_NODEJS_SHA256 = "b3521b29c7cb0c47a1a735cce7e7e811a4f80d8e3720cf3a1b624533e4bb7cb6"
@@ -163,29 +159,24 @@ node_repositories(
     node_repositories = {
         "10.16.0-linux_arm64": ("node-v10.16.0-linux-arm64.tar.gz", "node-v10.16.0-linux-arm64", "2d84a777318bc95dd2a201ab8d700aea7e20641b3ece0c048399398dc645cbd7"),
         "10.16.0-darwin_amd64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
+        "10.16.0-darwin_arm64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
+        "10.16.0-darwin_aarch64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
         "10.16.0-linux_amd64": ("node-v10.16.0-linux-x64.tar.xz", "node-v10.16.0-linux-x64", "1827f5b99084740234de0c506f4dd2202a696ed60f76059696747c34339b9d48"),
         "10.16.0-windows_amd64": ("node-v10.16.0-win-x64.zip", "node-v10.16.0-win-x64", "aa22cb357f0fb54ccbc06b19b60e37eefea5d7dd9940912675d3ed988bf9a059"),
     },
     node_version = "10.16.0",
 )
 
-# TODO give this a name like `gui2_npm` once the @bazel/karma tools can tolerate a name other than `npm`
+# Yarn install for the unified ONOS Web GUI
 yarn_install(
     name = "npm",
-    package_json = "//web/gui2:package.json",
+    package_json = "//web/gui:package.json",
     use_global_yarn_cache = True,
-    yarn_lock = "//web/gui2:yarn.lock",
-)
-
-npm_install(
-    # Name this npm so that Bazel Label references look like @npm//package
-    name = "gui1_npm",
-    package_json = "//tools/gui:package.json",
-    package_lock_json = "//tools/gui:package-lock.json",
+    yarn_lock = "//web/gui:yarn.lock",
 )
 
 # Install any Bazel rules which were extracted earlier by the npm_install rule.
-# Versions are set in web/gui2-fw-lib/package.json
+# Versions are set in web/gui-fw-lib/package.json
 
 RULES_WEBTESTING_VERSION = "0.3.3"
 

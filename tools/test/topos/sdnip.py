@@ -65,26 +65,26 @@ class SdnIpTopo( Topo ):
         numRoutesPerAs = 32
 
         # Add external ASes
-        as1 = BasicAutonomousSystem(1, generateRoutes(u'192.168.1.0/24', numRoutesPerAs))
+        as1 = BasicAutonomousSystem(1, generateRoutes('192.168.1.0/24', numRoutesPerAs))
         AutonomousSystem.addPeering(as1, sdnAs)
         AutonomousSystem.addPeering(as1, sdnAs, router2=3, intf1=2)
         as1.addLink(s5)
         as1.addLink(s6)
         as1.build(self)
         
-        as2 = BasicAutonomousSystem(2, generateRoutes(u'192.168.2.0/24', numRoutesPerAs))
+        as2 = BasicAutonomousSystem(2, generateRoutes('192.168.2.0/24', numRoutesPerAs))
         AutonomousSystem.addPeering(as2, sdnAs)
         AutonomousSystem.addPeering(as2, sdnAs, router2=2)
         as2.addLink(s7)
         as2.build(self)
         
-        as3 = BasicAutonomousSystem(3, generateRoutes(u'192.168.3.0/24', numRoutesPerAs))
+        as3 = BasicAutonomousSystem(3, generateRoutes('192.168.3.0/24', numRoutesPerAs))
         AutonomousSystem.addPeering(as3, sdnAs, router2=2)
         AutonomousSystem.addPeering(as3, sdnAs, router2=3)
         as3.addLink(s8)
         as3.build(self)
         
-        as4 = BasicAutonomousSystem(4, generateRoutes(u'192.168.4.0/24', numRoutesPerAs), numRouters=2)
+        as4 = BasicAutonomousSystem(4, generateRoutes('192.168.4.0/24', numRoutesPerAs), numRouters=2)
         AutonomousSystem.addPeering(as4, sdnAs)
         AutonomousSystem.addPeering(as4, sdnAs, router1=2, router2=3)
         as4.addLink(s9)

@@ -26,7 +26,7 @@ set -u  # exit on undefined variable
 
 KARAF_ARGS=server
 SYS_APPS=drivers
-ONOS_APPS=${ONOS_APPS:-gui2}  # Activate GUI2 unless specific apps were named
+ONOS_APPS=${ONOS_APPS:-gui}  # Activate unified GUI unless specific apps were named
 
 cd $ONOS_HOME
 
@@ -48,6 +48,7 @@ done
 # Activate the system required applications (SYS_APPS) as well as any
 # specified applications in the var ONOS_APPS
 for app in ${SYS_APPS//,/ } ${ONOS_APPS//,/ }; do
+    [ "$app" = "gui2" ] && app="gui"
     if  [ -d "${ONOS_HOME}/apps/org.onosproject.$app/" ]; then
         touch ${ONOS_HOME}/apps/org.onosproject.$app/active
     elif [ -d "${ONOS_HOME}/apps/$app" ]; then

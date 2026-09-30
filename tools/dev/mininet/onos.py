@@ -113,7 +113,7 @@ def updateNodeIPs( env, nodes ):
     # Get rid of stale junk
     for var in 'ONOS_CELL', 'ONOS_INSTANCES':
         env[ var ] = ''
-    for var in environ.keys():
+    for var in list(environ.keys()):
         if var.startswith( 'OC' ):
             env[ var ] = ''
     for index, node in enumerate( nodes, 1 ):
@@ -285,7 +285,7 @@ class ONOSNode( Controller ):
 
     def intfsDown( self ):
         """Bring all interfaces down"""
-        for intf in self.intfs.values():
+        for intf in list(self.intfs.values()):
             cmdOutput = intf.ifconfig( 'down' )
             # no output indicates success
             if cmdOutput:
@@ -293,7 +293,7 @@ class ONOSNode( Controller ):
 
     def intfsUp( self ):
         """Bring all interfaces up"""
-        for intf in self.intfs.values():
+        for intf in list(self.intfs.values()):
             cmdOutput = intf.ifconfig( 'up' )
             if cmdOutput:
                 error( "Error setting %s up: %s " % ( intf.name, cmdOutput ) )
@@ -338,7 +338,7 @@ class ONOSNode( Controller ):
     def memAvailable( self ):
         "Return available memory in KB (or -1 if we can't tell)"
         lines = open( '/proc/meminfo' ).read().strip().split( '\n' )
-        entries = map( str.split, lines )
+        entries = list(map( str.split, lines ))
         index = { entry[ 0 ]: entry for entry in entries }
         # Check MemAvailable if present
         default = ( None, '-1', 'kB' )
@@ -411,7 +411,7 @@ class ONOSNode( Controller ):
         "Update environment variables"
         cmd = ';'.join( ( 'export %s="%s"' % ( var, val )
                           if val else 'unset %s' % var )
-                        for var, val in envDict.iteritems() )
+                        for var, val in envDict.items() )
         self.cmd( cmd )
 
     def ucmd( self, *args, **_kwargs ):
@@ -539,7 +539,7 @@ class ONOSSwitchMixin( object ):
     def start( self, controllers ):
         "Connect to ONOSCluster"
         self.controllers = controllers
-        assert ( len( controllers ) is 1 and
+        assert ( len( controllers ) == 1 and
                  isONOSCluster( controllers[ 0 ] ) )
         clist = controllers[ 0 ].nodes()
         return super( ONOSSwitchMixin, self ).start( clist )
