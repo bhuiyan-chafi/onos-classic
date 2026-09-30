@@ -3,7 +3,7 @@
 # Simply include in your own .bash_aliases or .bash_profile
 
 # Root of the ONOS source tree
-export ONOS_ROOT=${ONOS_ROOT:-~/onos-b5g-open}
+export ONOS_ROOT=${ONOS_ROOT:-~/onos-classic}
 
 # This is a hack to remove symlinks from the ONOS_ROOT path. To be removed when
 # the protobuf buck rules can handle symlinks
@@ -17,6 +17,11 @@ export MAVEN=${MAVEN:-~/Applications/apache-maven-3.3.9}
 
 # Clean up Karaf environment variables to avoid issues when switching from ONOS 1.x to 2.x
 unset KARAF_VERSION KARAF_ROOT KARAF_LOG
+
+# Set JAVA_HOME if not already set (with macOS /usr/libexec/java_home fallback)
+if [ -z "${JAVA_HOME:-}" ] && [ -x /usr/libexec/java_home ]; then
+    export JAVA_HOME=$(/usr/libexec/java_home -v 11 2>/dev/null || /usr/libexec/java_home 2>/dev/null)
+fi
 
 # Setup a path
 export PATH="$PATH:$ONOS_ROOT/tools/dev/bin"

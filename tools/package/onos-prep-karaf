@@ -67,6 +67,41 @@ sed -i".VERBACK" -E "s/.ONOS_VERSION/${ONOS_VERSION}/" $PREFIX/$KARAF_DIR/etc/or
 # Fix onos version in startup properties
 sed -i".VERBACK" "s/.ONOS_VERSION/${ONOS_VERSION_POINT}/" $PREFIX/$KARAF_DIR/etc/startup.properties
 
+# Patch jre.properties to support Java 16, 17, and 21
+if ! grep -q "jre-17" $PREFIX/$KARAF_DIR/etc/jre.properties; then
+    cat >> $PREFIX/$KARAF_DIR/etc/jre.properties << 'EOF'
+
+jre-16 = ${jre-15}
+jre-17 = ${jre-16}
+jre-21 = ${jre-17}
+EOF
+fi
+
+# Patch config.properties to support Java 16, 17, and 21 execution environments
+if ! grep -q "eecap-17" $PREFIX/$KARAF_DIR/etc/config.properties; then
+    cat >> $PREFIX/$KARAF_DIR/etc/config.properties << 'EOF'
+
+eecap-16 = osgi.ee; osgi.ee="OSGi/Minimum"; version:List<Version>="1.0,1.1,1.2", \
+ osgi.ee; osgi.ee="JavaSE"; version:List<Version>="1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0", \
+ osgi.ee; osgi.ee="JRE"; version:List<Version>="1.0,1.1", \
+ osgi.ee; osgi.ee="JavaSE/compact1"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0", \
+ osgi.ee; osgi.ee="JavaSE/compact2"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0", \
+ osgi.ee; osgi.ee="JavaSE/compact3"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0"
+eecap-17 = osgi.ee; osgi.ee="OSGi/Minimum"; version:List<Version>="1.0,1.1,1.2", \
+ osgi.ee; osgi.ee="JavaSE"; version:List<Version>="1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0", \
+ osgi.ee; osgi.ee="JRE"; version:List<Version>="1.0,1.1", \
+ osgi.ee; osgi.ee="JavaSE/compact1"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0", \
+ osgi.ee; osgi.ee="JavaSE/compact2"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0", \
+ osgi.ee; osgi.ee="JavaSE/compact3"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0"
+eecap-21 = osgi.ee; osgi.ee="OSGi/Minimum"; version:List<Version>="1.0,1.1,1.2", \
+ osgi.ee; osgi.ee="JavaSE"; version:List<Version>="1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,21.0", \
+ osgi.ee; osgi.ee="JRE"; version:List<Version>="1.0,1.1", \
+ osgi.ee; osgi.ee="JavaSE/compact1"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,21.0", \
+ osgi.ee; osgi.ee="JavaSE/compact2"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,21.0", \
+ osgi.ee; osgi.ee="JavaSE/compact3"; version:List<Version>="1.8,9.0,10.0,11.0,13.0,14.0,15.0,16.0,17.0,21.0"
+EOF
+fi
+
 # Add log4j2-extra Bundle
 mkdir -p $PREFIX/$KARAF_DIR/system/org/onosproject/onos-log4j2-extra/$ONOS_VERSION_POINT/
 cp $LOG4J2_EXTRA $PREFIX/$KARAF_DIR/system/org/onosproject/onos-log4j2-extra/$ONOS_VERSION_POINT/onos-log4j2-extra-$ONOS_VERSION_POINT.jar

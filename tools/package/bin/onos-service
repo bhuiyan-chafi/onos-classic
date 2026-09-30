@@ -16,6 +16,32 @@
 ONOS_HOME=${ONOS_HOME:-$(cd $(dirname $0)/.. >/dev/null 2>&1 && pwd)}
 
 JAVA_OPTS="${JAVA_OPTS:--XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Dkaraf.log.console=INFO -Dds.lock.timeout.milliseconds=10000}"
+
+# JVM Module Encapsulation Flags (JEP 403) for Java 17+
+# Required for Kryo serialization, Atomix distributed store, Netty byte buffers, and Karaf OSGi container.
+JAVA_OPTS+=" --add-opens=java.base/java.lang=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.lang.reflect=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.io=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.nio=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.util=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.util.concurrent=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.text=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.time=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.math=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/sun.net.dns=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.security=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.base/java.net=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.naming/javax.naming.spi=ALL-UNNAMED"
+JAVA_OPTS+=" --add-opens=java.rmi/sun.rmi.transport.tcp=ALL-UNNAMED"
+JAVA_OPTS+=" --add-exports=java.base/sun.nio.ch=ALL-UNNAMED"
+JAVA_OPTS+=" --add-exports=java.base/sun.net.dns=ALL-UNNAMED"
+JAVA_OPTS+=" --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED"
+JAVA_OPTS+=" --add-exports=java.base/sun.security.x509=ALL-UNNAMED"
+JAVA_OPTS+=" --add-exports=java.security.sasl/com.sun.security.sasl=ALL-UNNAMED"
+
 if [ ! -z "$ONOS_YOURKIT" ]; then
   JAVA_OPTS+=" -agentpath:$ONOS_HOME/libyjpagent.so=listen=all"
 fi

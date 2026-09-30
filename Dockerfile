@@ -16,8 +16,8 @@
 
 ARG JOBS=2
 ARG PROFILE=default
-ARG TAG=11.0.13-11.52.13
-ARG JAVA_PATH=/usr/lib/jvm/zulu11
+ARG TAG=17-latest
+ARG JAVA_PATH=/usr/lib/jvm/zulu17
 
 # First stage is the toolchain base environment.
 # zulu-openjdk images are based on Ubuntu.
@@ -65,8 +65,8 @@ ARG PROFILE
 RUN cat WORKSPACE-docker >> WORKSPACE && bazelisk build onos \
     --jobs ${JOBS} \
     --verbose_failures \
-    --java_runtime_version=dockerjdk_11 \
-    --tool_java_runtime_version=dockerjdk_11 \
+    --java_runtime_version=dockerjdk_17 \
+    --tool_java_runtime_version=dockerjdk_17 \
     --define profile=${PROFILE}
 
 # We extract the tar in the build environment to avoid having to put the tar in

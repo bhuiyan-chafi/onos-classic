@@ -212,6 +212,7 @@ public class OSGiWrapper {
 
         analyzer.setProperty(Analyzer.DYNAMICIMPORT_PACKAGE, dynamicimportPackages);
         analyzer.setProperty(Analyzer.DSANNOTATIONS_OPTIONS, "inherit");
+        analyzer.setProperty(Analyzer.NOIMPORTJAVA, "true");
 
         // TODO include version in export, but not in import
         analyzer.setProperty(Analyzer.EXPORT_PACKAGE, exportPackages);

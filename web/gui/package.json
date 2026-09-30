@@ -9,7 +9,9 @@
   "scripts": {
     "build": "bazel build //web/gui:onos-web-gui",
     "build:prod": "bazel build //web/gui:onos-web-gui-prod",
-    "build:headless": "bazel build //web/gui:onos-web-gui-headless",
+    "build:prebuilt": "bazel build --define prebuilt_gui=true //web/gui:onos-web-gui",
+    "build:headless": "bazel build --define skip_gui=true //web/gui:onos-web-gui",
+    "export-dist": "mkdir -p dist && cp -r ../../bazel-bin/web/gui/src/main/webapp/prodapp/* dist/",
     "package": "bazel build //web/gui:onos-web-gui-oar",
     "test": "bazel test //web/gui/...",
     "postinstall": "ngcc"
