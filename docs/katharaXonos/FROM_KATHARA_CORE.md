@@ -2,11 +2,20 @@
 
 This tutorial explains how to build and run a standalone Docker image integrating Kathará and ONOS.
 
+## Get it from Docker Hub
+
+```bash
+docker pull chafiullah/kathara-onos-classic
+```
+
 ## Build the Docker Image
 
 Run the following command to build the image from scratch:
 
 ```bash
+# if you haven't cloned the repo yet
+git clone https://github.com/bhuiyan-chafi/onos-classic.git
+
 # From the repository root:
 docker build -t kathara/onos-classic docs/katharaXonos --no-cache
 
@@ -103,5 +112,9 @@ Open your web browser and navigate to:
 - **URL**: [http://localhost:8181/onos/ui](http://localhost:8181/onos/ui)
 - **Username**: `onos` or `karaf`
 - **Password**: `rocks` or `karaf`
+
+### 7. Lab Example
+
+Please follow this [tutorial](https://github.com/bhuiyan-chafi/sdn-docker/blob/main/kathara/katharaXonos/README.md) for the LAB.
 
 ---
