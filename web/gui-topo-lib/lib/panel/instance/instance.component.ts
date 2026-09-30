@@ -109,7 +109,7 @@ export class InstanceComponent extends PanelBaseImpl implements OnChanges {
      * @param idx The index of the panel (0-6)
      */
     panelColour(idx: number): string {
-        return this.sus.cat7().getColor(idx, false, '');
+        return this.sus.cat7().getColor(idx, false, '') as string;
     }
 
     /**

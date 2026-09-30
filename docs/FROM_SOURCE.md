@@ -249,6 +249,30 @@ ok clean
 - ONOS will unpack the bundled OpenJDK 17 LTS runtime, stage Apache Karaf, and start all core services.
 - The startup output will automatically tail `karaf.log` in your terminal. Keep this terminal open.
 
+### 4.5 Frontend Development Mode (Angular 18 LTS)
+
+For frontend developers working on the Single Page Application (topology visualization, Lion internationalization, device tables, or navigation modules), ONOS Classic features a decoupled Angular 18 workflow with live hot-reloading:
+
+```bash
+# 1. Navigate to the Web GUI module
+cd $ONOS_ROOT/web/gui
+
+# 2. Install modern frontend dependencies (Angular 18, D3 v7, TypeScript 5)
+npm install
+
+# 3. Start the Angular CLI development server with hot-reload
+npm start
+# Or using the local proxy configuration against a running ONOS backend:
+npm run dev
+```
+
+- The dev server listens on [http://localhost:4200](http://localhost:4200) with automatic rebuilds on file save.
+- To produce optimized production bundles packaged by Bazel:
+  ```bash
+  npm run build
+  ```
+- Once compiled into `web/gui/dist/`, Bazel packaging (`bazel build //:onos` or `ok clean`) automatically bundles the modern assets into the OSGi Web Application Bundle without requiring Node or npm inside Bazel.
+
 ---
 
 ## 5. Verification & Automated Health Checks

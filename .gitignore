@@ -43,7 +43,10 @@ out/
 
 bazel-*
 
+node_modules/
+web/node_modules/
 web/gui/node_modules/
+web/gui/.angular/
 web/gui/documentation/
 web/gui/dist/
 web/gui/.pki/

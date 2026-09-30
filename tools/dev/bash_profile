@@ -58,7 +58,30 @@ alias ot="bazel run //:buildifier_check && bazel query 'tests(//...)' | grep -v 
 alias ob="op && ot"
 alias obd="SHLVL=1 bazel build //docs:external"
 
-alias ok="SHLVL=1 bazel run //:onos-local --"
+
+# ok — Launch ONOS locally (auto-builds the Angular Web GUI if dist/ is missing)
+# Usage: ok [clean] [debug] [...bazel-passthrough-args]
+function ok {
+    local GUI_DIST="${ONOS_ROOT}/web/gui/dist/browser/index.html"
+    local GUI_NM="${ONOS_ROOT}/web/gui/node_modules"
+    local NG="${GUI_NM}/.bin/ng"
+
+    if [ ! -f "${GUI_DIST}" ]; then
+        echo "[ok] Web GUI assets not found in dist/ — building Angular frontend..."
+
+        if [ ! -d "${GUI_NM}" ]; then
+            echo "[ok]   Running: npm install (web/gui)"
+            (cd "${ONOS_ROOT}/web/gui" && npm install --legacy-peer-deps --silent)
+        fi
+
+        echo "[ok]   Running: ng build --configuration production"
+        (cd "${ONOS_ROOT}/web/gui" && NG_ANALYTICS=off "${NG}" build --configuration production)
+        echo "[ok] Web GUI build complete."
+    fi
+
+    SHLVL=1 bazel run //:onos-local -- "$@"
+}
+
 alias oh="onos localhost halt"
 
 alias ol='onos-log'

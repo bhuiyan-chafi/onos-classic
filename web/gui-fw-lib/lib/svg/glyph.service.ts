@@ -33,7 +33,8 @@ const rgs = 'registerGlyphSet(): ';
 })
 export class GlyphService {
     // internal state
-    glyphs = d3.map();
+    // D3 v7: d3.map() removed — use native ES2015 Map
+    glyphs: Map<string, {id: string; vb: string; d: string}> = new Map();
     api: Object;
 
     constructor(
@@ -94,7 +95,7 @@ export class GlyphService {
 
     clear() {
         // start with a fresh map
-        this.glyphs = d3.map();
+        this.glyphs = new Map();
     }
 
     init() {
@@ -143,8 +144,8 @@ export class GlyphService {
         return this.reportDups(dups, rgs);
     }
 
-    ids() {
-        return this.glyphs.keys();
+    ids(): string[] {
+        return Array.from(this.glyphs.keys());
     }
 
     glyph(id) {

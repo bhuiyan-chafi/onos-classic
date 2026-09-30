@@ -1,28 +1,34 @@
 {
   "compilerOptions": {
-    // Allow uses of these JS APIs
-    "lib": [
-      "dom",
-      "es5",
-      "es2015.collection",
-      "es2015.iterable",
-      "es2015.promise",
-      "es2017",
-      "es2017.object"
-    ],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom", "dom.iterable"],
+    "useDefineForClassFields": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es6",
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     "moduleResolution": "node",
-    // Don't scan the node_modules/@types folder for ambient types.
-    // This would force us to have all the types in the dependencies of
-    // each library.
-    // Instead we'll be explicit about declaring ambient type dependencies
-    // using the ///<reference types=""/> syntax.
-    "types": [],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
     "paths": {
-      "org_onosproject_onos/*": ["*"]
+      "org_onosproject_onos/web/gui-fw-lib/*": ["../gui-fw-lib/*"],
+      "org_onosproject_onos/web/gui-topo-lib/*": ["../gui-topo-lib/*"]
     }
-  }
+  },
+  "include": [
+    "src/main/webapp/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/main/webapp/**/*.spec.ts"
+  ]
 }

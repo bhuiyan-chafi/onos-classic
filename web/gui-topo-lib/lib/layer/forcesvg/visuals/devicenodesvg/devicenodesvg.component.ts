@@ -163,6 +163,6 @@ export class DeviceNodeSvgComponent extends NodeVisual implements OnInit, OnChan
      */
     panelColour(): string {
         const idx = this.ts.instancesIndex.get(this.device.master);
-        return this.sus.cat7().getColor(idx, this.colorMuted, this.colorTheme);
+        return this.sus.cat7().getColor(idx, this.colorMuted, this.colorTheme) as string;
     }
 }

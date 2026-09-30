@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import * as d3 from 'd3';
+
 import { LogService } from '../log.service';
 import { FnService } from '../util/fn.service';
 import { LionService } from './lion.service';
@@ -72,7 +72,7 @@ export class KeysService {
 
     installOn(elem) {
         this.log.debug('Installing keys handler');
-        elem.on('keydown', () => { this.keyIn(); });
+        elem.on('keydown', (event: KeyboardEvent) => { this.keyIn(event); });
         this.setupGlobalKeys();
     }
 
@@ -194,17 +194,15 @@ export class KeysService {
         }
     }
 
-    protected textFieldInput() {
-        const t = d3.event.target.tagName.toLowerCase();
+    protected textFieldInput(event: KeyboardEvent) {
+        const t = (event.target as HTMLElement).tagName.toLowerCase();
         return t === 'input' || t === 'textarea';
     }
 
-    protected keyIn() {
-        const event = d3.event;
-        // d3.events can set the keyCode, but unit tests based on KeyboardEvent
-        // cannot set keyCode since the attribute has been deprecated
+    protected keyIn(event?: KeyboardEvent) {
+        // D3 v7: event is passed directly from the listener; no longer available via d3.event
         const code = event.keyCode ? event.keyCode : event.code;
-        const codeNum: number = parseInt(code, 10);
+        const codeNum: number = parseInt(code as string, 10);
         let key = this.whatKey(codeNum);
         this.log.debug('Key detected', event, key, event.code, event.keyCode);
         const textBlockable = !this.textFieldDoesNotBlock[key];
@@ -227,7 +225,7 @@ export class KeysService {
         modifiers.push(key);
         key = modifiers.join('-');
 
-        if (textBlockable && this.textFieldInput()) {
+        if (textBlockable && this.textFieldInput(event)) {
             return;
         }
 
@@ -333,7 +331,8 @@ export class KeysService {
         const masked = [];
         const msgs = [];
 
-        d3.map(map).keys().forEach((key) => {
+        // D3 v7: d3.map() removed — use Object.keys() for plain JS objects
+        Object.keys(map).forEach((key) => {
             if (this.keyHandler.maskedKeys[key]) {
                 masked.push(key);
                 msgs.push(caller, ': Key "' + key + '" is reserved');
@@ -373,9 +372,10 @@ export class KeysService {
     }
 
     getKeyBindings() {
-        const gkeys = d3.map(this.keyHandler.globalKeys).keys();
-        const masked = d3.map(this.keyHandler.maskedKeys).keys();
-        const vkeys = d3.map(this.keyHandler.viewKeys).keys();
+        // D3 v7: d3.map() removed — use Object.keys() for plain JS objects
+        const gkeys = Object.keys(this.keyHandler.globalKeys);
+        const masked = Object.keys(this.keyHandler.maskedKeys);
+        const vkeys = Object.keys(this.keyHandler.viewKeys);
         const vfn = !!this.fs.isF(this.keyHandler.viewFn);
 
         return {

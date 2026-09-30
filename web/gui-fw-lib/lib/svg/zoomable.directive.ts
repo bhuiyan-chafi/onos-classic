@@ -54,8 +54,8 @@ export class ZoomableDirective implements OnChanges, OnInit {
     ) {
         const container = d3.select(this._element.nativeElement);
 
-        const zoomed = () => {
-            const transform = d3.event.transform;
+        const zoomed = (event: d3.D3ZoomEvent<Element, unknown>) => {
+            const transform = event.transform;
             container.attr('transform', 'translate(' + transform.x + ',' + transform.y + ') scale(' + transform.k + ')');
             this.updateZoomState(<TopoZoomPrefs>{tx: transform.x, ty: transform.y, sc: transform.k});
         };
@@ -65,7 +65,11 @@ export class ZoomableDirective implements OnChanges, OnInit {
 
     ngOnInit() {
         this.zoomCached = this.ps.getPrefs(TOPO_ZOOM_PREFS, ZOOM_PREFS_DEFAULT);
-        const svg = d3.select(this.zoomableOf);
+        const svg = d3.select(
+            this.zoomableOf instanceof ElementRef
+                ? this.zoomableOf.nativeElement
+                : this.zoomableOf as unknown as Element
+        );
 
         svg.call(this.zoom);
 
@@ -89,7 +93,9 @@ export class ZoomableDirective implements OnChanges, OnInit {
      */
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['zoomableOf']) {
-            const svg = d3.select(changes['zoomableOf'].currentValue);
+            const rawValue = changes['zoomableOf'].currentValue;
+            const elem = rawValue instanceof ElementRef ? rawValue.nativeElement : rawValue as unknown as Element;
+            const svg = d3.select(elem);
             svg.call(this.zoom);
             this.log.debug('Applying zoomable behaviour on', this.zoomableOf, this._element.nativeElement);
         }
@@ -101,7 +107,10 @@ export class ZoomableDirective implements OnChanges, OnInit {
      * Animated to run over 750ms
      */
     changeZoomLevel(zoomState: TopoZoomPrefs, fast?: boolean): void {
-        const svg = d3.select(this.zoomableOf);
+        const elem = this.zoomableOf instanceof ElementRef
+            ? this.zoomableOf.nativeElement
+            : this.zoomableOf as unknown as Element;
+        const svg = d3.select(elem);
         svg.transition().duration(fast ? 0 : 750).call(this.zoom.transform,
             d3.zoomIdentity.translate(zoomState.tx, zoomState.ty).scale(zoomState.sc));
         this.updateZoomState(zoomState);

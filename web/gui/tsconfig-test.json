@@ -1,6 +1,16 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "outDir": "./out-tsc/spec",
     "types": ["jasmine"]
-  }
+  },
+  "include": [
+    "src/main/webapp/**/*.spec.ts",
+    "src/main/webapp/test.ts",
+    "../gui-fw-lib/**/*.spec.ts",
+    "../gui-topo-lib/**/*.spec.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -3,7 +3,6 @@
 """
 
 load("//tools/build/bazel:jdk_genrule.bzl", genrule = "jdk_genrule")
-load("@npm//@bazel/typescript:index.bzl", "ts_config")
 
 COMPILE_DEPS = CORE_DEPS + JACKSON + KRYO + CLI + [
     "@javax_ws_rs_api//jar",
@@ -24,15 +23,11 @@ TEST_DEPS = TEST + [
 ]
 
 exports_files(
-    ["tsconfig.json"],
+    [
+        "tsconfig.json",
+        "tsconfig-test.json",
+    ],
     visibility = ["//visibility:public"],
-)
-
-ts_config(
-    name = "tsconfig-test",
-    src = "tsconfig-test.json",
-    visibility = ["//visibility:public"],
-    deps = [":tsconfig.json"],
 )
 
 # Export localization and core resources
@@ -86,6 +81,7 @@ genrule(
     name = "onos-web-gui-prebuilt",
     srcs = [
         ":prebuilt_dist",
+        "//web/gui/src/main/webapp:static_assets",
         ":_onos-gui-base-jar",
         ":onos-gui-lion",
         "//web/gui/src/main/webapp:WEB-INF/web.xml",
@@ -98,7 +94,9 @@ genrule(
           " jar xf $$ROOT/$(location :_onos-gui-base-jar) &&" +
           " unzip -q $$ROOT/$(location :onos-gui-lion) web/gui/src/main/resources/**/* &&" +
           " cp -R web/gui/src/main/resources/org/onosproject/ui/lion* WEB-INF/classes/org/onosproject/ui/ &&" +
-          " cp -R $$ROOT/web/gui/dist/* WEB-INF/classes/ &&" +
+          " if [ -d $$ROOT/web/gui/dist/browser ]; then cp -rfL $$ROOT/web/gui/dist/browser/* WEB-INF/classes/; elif [ -d $$ROOT/web/gui/dist ]; then cp -rfL $$ROOT/web/gui/dist/* WEB-INF/classes/; fi &&" +
+          " if [ -d $$ROOT/web/gui/src/main/webapp/data ]; then cp -rfL $$ROOT/web/gui/src/main/webapp/data WEB-INF/classes/; fi &&" +
+          " for f in $$ROOT/web/gui/src/main/webapp/*.html; do if [ `basename $$f` != 'index.html' ]; then cp -fL $$f WEB-INF/classes/; fi; done &&" +
           " mv $$ROOT/$(location //web/gui/src/main/webapp:WEB-INF/web.xml) WEB-INF &&" +
           " (cd WEB-INF/classes && jar xf $$ROOT/$(location :_onos-gui-base-jar_cfgdef.jar)) &&" +
           " find . -type f -exec touch -t 202001010001 {} \\; &&" +
@@ -133,6 +131,7 @@ genrule(
 genrule(
     name = "onos-web-gui-headless",
     srcs = [
+        "//web/gui/src/main/webapp:static_assets",
         ":_onos-gui-base-jar",
         ":onos-gui-lion",
         "//web/gui/src/main/webapp:WEB-INF/web.xml",
@@ -145,7 +144,10 @@ genrule(
           " jar xf $$ROOT/$(location :_onos-gui-base-jar) &&" +
           " unzip -q $$ROOT/$(location :onos-gui-lion) web/gui/src/main/resources/**/* &&" +
           " cp -R web/gui/src/main/resources/org/onosproject/ui/lion* WEB-INF/classes/org/onosproject/ui/ &&" +
-          " echo '<!DOCTYPE html><html><head><title>ONOS Headless</title></head><body><h1>ONOS Headless Mode</h1><p>Web GUI compilation was skipped (--define skip_gui=true)</p></body></html>' > WEB-INF/classes/index.html &&" +
+          " cp -fL $$ROOT/web/gui/src/main/webapp/*.html WEB-INF/classes/ &&" +
+          " if [ -d $$ROOT/web/gui/src/main/webapp/data ]; then cp -rfL $$ROOT/web/gui/src/main/webapp/data WEB-INF/classes/; fi &&" +
+          " rm -f WEB-INF/classes/index.html &&" +
+          " echo '<!DOCTYPE html><html><head><title>ONOS Headless</title><!-- {INJECTED-USER-START} --><!-- {INJECTED-USER-END} --></head><body><h1>ONOS Headless Mode</h1><p>Web GUI compilation was skipped (--define skip_gui=true)</p></body></html>' > WEB-INF/classes/index.html &&" +
           " mv $$ROOT/$(location //web/gui/src/main/webapp:WEB-INF/web.xml) WEB-INF &&" +
           " (cd WEB-INF/classes && jar xf $$ROOT/$(location :_onos-gui-base-jar_cfgdef.jar)) &&" +
           " find . -type f -exec touch -t 202001010001 {} \\; &&" +
@@ -157,8 +159,7 @@ alias(
     name = "onos-web-gui",
     actual = select({
         ":skip_gui": ":onos-web-gui-headless",
-        ":prebuilt_gui": ":onos-web-gui-prebuilt",
-        "//conditions:default": ":onos-web-gui-prod",
+        "//conditions:default": ":onos-web-gui-prebuilt",
     }),
     visibility = ["//visibility:public"],
 )

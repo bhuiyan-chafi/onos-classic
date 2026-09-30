@@ -151,48 +151,9 @@ http_archive(
     ],
 )
 
-load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "npm_install", "yarn_install")
-
-# Setup the Node repositories. We need a NodeJS version that is more recent than v10.15.0
-# because "selenium-webdriver" which is required for "ng e2e" cannot be installed.
-node_repositories(
-    node_repositories = {
-        "10.16.0-linux_arm64": ("node-v10.16.0-linux-arm64.tar.gz", "node-v10.16.0-linux-arm64", "2d84a777318bc95dd2a201ab8d700aea7e20641b3ece0c048399398dc645cbd7"),
-        "10.16.0-darwin_amd64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
-        "10.16.0-darwin_arm64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
-        "10.16.0-darwin_aarch64": ("node-v10.16.0-darwin-x64.tar.gz", "node-v10.16.0-darwin-x64", "6c009df1b724026d84ae9a838c5b382662e30f6c5563a0995532f2bece39fa9c"),
-        "10.16.0-linux_amd64": ("node-v10.16.0-linux-x64.tar.xz", "node-v10.16.0-linux-x64", "1827f5b99084740234de0c506f4dd2202a696ed60f76059696747c34339b9d48"),
-        "10.16.0-windows_amd64": ("node-v10.16.0-win-x64.zip", "node-v10.16.0-win-x64", "aa22cb357f0fb54ccbc06b19b60e37eefea5d7dd9940912675d3ed988bf9a059"),
-    },
-    node_version = "10.16.0",
-)
-
-# Yarn install for the unified ONOS Web GUI
-yarn_install(
-    name = "npm",
-    package_json = "//web/gui:package.json",
-    use_global_yarn_cache = True,
-    yarn_lock = "//web/gui:yarn.lock",
-)
-
-# Install any Bazel rules which were extracted earlier by the npm_install rule.
-# Versions are set in web/gui-fw-lib/package.json
-
-RULES_WEBTESTING_VERSION = "0.3.3"
-
-RULES_WEBTESTING_SHA256 = "9bb461d5ef08e850025480bab185fd269242d4e533bca75bfb748001ceb343c3"
-
-http_archive(
-    name = "io_bazel_rules_webtesting",
-    sha256 = RULES_WEBTESTING_SHA256,
-    urls = [
-        "https://github.com/bazelbuild/rules_webtesting/releases/download/%s/rules_webtesting.tar.gz" % RULES_WEBTESTING_VERSION,
-    ],
-)
-
-load("//tools/build/bazel:angular_workspace.bzl", "load_angular")
-
-load_angular()
+# Decoupled Frontend Build: Angular compilation is managed via standard Angular CLI (ng build)
+# into web/gui/dist/ and packaged directly by Bazel into the OSGi WAB bundle.
+# Legacy @bazel/angular, node_repositories, and yarn_install are retired.
 
 # buildifier is written in Go and hence needs rules_go to be built.
 # See https://github.com/bazelbuild/rules_go for the up to date setup instructions.
