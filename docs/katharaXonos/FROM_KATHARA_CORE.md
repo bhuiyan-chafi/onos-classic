@@ -8,6 +8,20 @@ This tutorial explains how to build and run a standalone Docker image integratin
 docker pull chafiullah/kathara-onos-classic
 ```
 
+You can run the container in interactive mode:
+
+- Exposing both the Web UI (`8181`) and SSH CLI (`8101`):
+
+  ```bash
+  docker run -it --rm -p 8181:8181 -p 8101:8101 --name kathara-onos-test chafiullah/kathara-onos-classic /bin/bash
+  ```
+
+- Or exposing only the Web UI (`8181`) if you plan to access the ONOS CLI directly from inside the container:
+
+  ```bash
+  docker run -it --rm -p 8181:8181 --name kathara-onos-test chafiullah/kathara-onos-classic /bin/bash
+  ```
+
 ## Build the Docker Image
 
 Run the following command to build the image from scratch:
